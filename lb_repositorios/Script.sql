@@ -3,68 +3,134 @@ GO
 
 USE db_hotel;
 
-CREATE TABLE [Habitaciones] ([Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-                           [Nombre] NVARCHAR(100) NOT NULL,
-                           [Camas] INT NOT NULL DEFAULT 1,
-                           [Estado] BIT NOT NULL DEFAULT 0
+CREATE TABLE [Habitaciones] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    [Nombre] NVARCHAR(100) NOT NULL,
+    [Camas] INT NOT NULL DEFAULT 1,
+    [Estado] BIT NOT NULL DEFAULT 0
 );
 GO
 
-CREATE TABLE [Recepcionistas] ([Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-                            [Carnet] NVARCHAR(10) NOT NULL UNIQUE ,
-                            [Nombre] NVARCHAR(100) UNIQUE NOT NULL,
-                            [Salario] FLOAT NOT NULL DEFAULT 0
+CREATE TABLE [Recepcionistas] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    [Carnet] NVARCHAR(10) NOT NULL UNIQUE ,
+    [Nombre] NVARCHAR(100) UNIQUE NOT NULL,
+    [Salario] FLOAT NOT NULL DEFAULT 0
 );
 GO
 
-CREATE TABLE [Opiniones] ([Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-                        [Opcion] NVARCHAR(30) DEFAULT NULL,
-                        [Cantidad] SMALLINT DEFAULT 0,
+CREATE TABLE [Opiniones] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    [Opcion] NVARCHAR(30) DEFAULT NULL,
+    [Cantidad] SMALLINT DEFAULT 0,
 );
 GO
 
-CREATE TABLE [Clientes] ([Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-                       [Cedula] NVARCHAR(20) NOT NULL UNIQUE,
-                       [Nombre] NVARCHAR(65) NOT NULL,
-                       [Opinion] INT NOT NULL REFERENCES [Opiniones] ([Id])
+CREATE TABLE [Clientes] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Cedula] NVARCHAR(20) NOT NULL UNIQUE,
+	[Nombre] NVARCHAR(65) NOT NULL,
+	[Opinion] INT NOT NULL REFERENCES [Opiniones] ([Id])
 );
 GO
 
-CREATE TABLE [Reservas] ([Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-                       [Codigo] NVARCHAR(20) NOT NULL UNIQUE,
-                       [Fecha_entrada] SMALLDATETIME NOT NULL,
-                       [Fecha_salida] SMALLDATETIME NOT NULL,
-                       [Recepcionista] INT NOT NULL REFERENCES [Recepcionistas] ([Id]),
-                       [Cliente] INT NOT NULL REFERENCES [Clientes] ([Id]),
-                       [Habitacion] INT NOT NULL REFERENCES [Habitaciones] ([Id])
+CREATE TABLE [Reservas] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    [Codigo] NVARCHAR(20) NOT NULL UNIQUE,
+    [Fecha_entrada] SMALLDATETIME NOT NULL,
+    [Fecha_salida] SMALLDATETIME NOT NULL,
+    [Recepcionista] INT NOT NULL REFERENCES [Recepcionistas] ([Id]),
+    [Cliente] INT NOT NULL REFERENCES [Clientes] ([Id]),
+    [Habitacion] INT NOT NULL REFERENCES [Habitaciones] ([Id])
 );
 GO
 
-CREATE TABLE [Servicios] ([Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-                        [Tipo] NVARCHAR(50) NOT NULL,
-                        [Tarifa] FLOAT NOT NULL,
-						[Descripcion] NVARCHAR(50) NOT NULL
+CREATE TABLE [Servicios] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    [Tipo] NVARCHAR(50) NOT NULL,
+    [Tarifa] FLOAT NOT NULL,
+	[Descripcion] NVARCHAR(50) NOT NULL
 );
 GO
 
-CREATE TABLE [Servicios_Reservas] ([Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-                                [Servicio] INT NOT NULL REFERENCES [Servicios] ([Id]),
-                                [Reserva] INT NOT NULL REFERENCES [Reservas] ([Id])
+CREATE TABLE [Servicios_Reservas] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    [Servicio] INT NOT NULL REFERENCES [Servicios] ([Id]),
+    [Reserva] INT NOT NULL REFERENCES [Reservas] ([Id])
 );
 GO
 
-CREATE TABLE [Promociones] ([Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-                          [Descuento] SMALLINT NOT NULL DEFAULT 0,
-                          [Fecha_Inicio] SMALLDATETIME NOT NULL,
-                          [Fecha_Fin] SMALLDATETIME NOT NULL 
+CREATE TABLE [Promociones] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    [Descuento] SMALLINT NOT NULL DEFAULT 0,
+    [Fecha_Inicio] SMALLDATETIME NOT NULL,
+    [Fecha_Fin] SMALLDATETIME NOT NULL 
 );
 GO
 
-CREATE TABLE [Pagos] ([Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-					[Total] FLOAT NOT NULL,
-					[Medio] NVARCHAR(50) NOT NULL,
-					[Reserva] INT NOT NULL REFERENCES [Reservas] ([Id]),
-					[Promocion] INT NOT NULL REFERENCES [Promociones] ([Id])
+CREATE TABLE [Pagos] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Total] FLOAT NOT NULL,
+	[Medio] NVARCHAR(50) NOT NULL,
+	[Reserva] INT NOT NULL REFERENCES [Reservas] ([Id]),
+	[Promocion] INT NOT NULL REFERENCES [Promociones] ([Id])
+);
+GO
+
+CREATE TABLE [Roles](
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Nombre] NVARCHAR(50) NOT NULL
+);
+GO
+
+CREATE TABLE [Usuarios](
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Nombre] NVARCHAR(50) NOT NULL,
+	[Contrasena] NVARCHAR(50) NOT NULL,
+	[Rol] INT NOT NULL REFERENCES [Roles] ([Id])
+);
+GO
+
+CREATE TABLE [Auditorias] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Codigo] NVARCHAR(50) NOT NULL,
+	[Accion] NVARCHAR(255) NOT NULL,
+	[Fecha] SMALLDATETIME NOT NULL,
+	[Usuario] INT NOT NULL REFERENCES [Usuarios] ([Id]),
+);
+GO
+
+CREATE TABLE [AuditoriasPagos](
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Codigo] NVARCHAR(50) NOT NULL,
+	[Accion] NVARCHAR(255) NOT NULL,
+	[Fecha] SMALLDATETIME NOT NULL,
+	[Usuario] INT NOT NULL REFERENCES [Usuarios] ([Id]),
+	[Pago] INT NOT NULL REFERENCES [Pagos] ([Id]),
+);
+GO
+
+CREATE TABLE [AuditoriasReservas](
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Codigo] NVARCHAR(50) NOT NULL,
+	[Accion] NVARCHAR(255) NOT NULL,
+	[Fecha] SMALLDATETIME NOT NULL,
+	[Usuario] INT NOT NULL REFERENCES [Usuarios] ([Id]),
+	[Reserva] INT NOT NULL REFERENCES [Reservas] ([Id]),
+);
+GO
+
+CREATE TABLE [Permisos](
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Tipo] NVARCHAR(50) NOT NULL
+);
+GO
+
+CREATE TABLE [Roles_Permisos](
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Codigo] NVARCHAR(50) NOT NULL,
+	[Permiso] INT NOT NULL REFERENCES [Permisos] ([Id]),
+	[Rol] INT NOT NULL REFERENCES [Roles] ([Id])
 );
 GO
 
