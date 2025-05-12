@@ -56,7 +56,7 @@ namespace asp_servicios.Controllers
         }
 
         [HttpPost]
-        public string PorCodigo()
+        public string PorCarnet()
         {
             var respuesta = new Dictionary<string, object>();
             try
