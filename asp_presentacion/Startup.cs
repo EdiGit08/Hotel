@@ -16,8 +16,6 @@ namespace asp_presentacion
         {
             // Presentaciones
             services.AddScoped<IAuditoriasPresentacion, AuditoriasPresentacion>();
-            services.AddScoped<IAuditoriasPagosPresentacion, AuditoriasPagosPresentacion>();
-            services.AddScoped<IAuditoriasReservasPresentacion, AuditoriasReservasPresentacion>();
             services.AddScoped<IClientesPresentacion, ClientesPresentacion>();
             services.AddScoped<IHabitacionesPresentacion, HabitacionesPresentacion>();
             services.AddScoped<IOpinionesPresentacion, OpinionesPresentacion>();

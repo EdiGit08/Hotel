@@ -47,8 +47,6 @@
                 <input type="hidden"
                        asp-for="@Model.Actual!.Codigo" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Usuario" />
-                <input type="hidden"
                        asp-for="@Model.Actual!.Accion" />
                 <input type="hidden"
                        asp-for="@Model.Actual!.Fecha" />
@@ -68,16 +66,6 @@
                                 <input id="nmEstudiante"
                                        class="cts_forms form-control"
                                        asp-for="@Model.Actual!.Codigo" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Usuario
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmMateria"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Usuario" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -125,8 +113,7 @@
                                 Desea borrar la entidad?
                             </h4>
                             <h6 align="left">
-                                @Model.Actual!.Codigo,
-                                @Model.Actual!.Usuario
+                                @Model.Actual!.Codigo
                             </h6>
                             <br />
                             <br />
@@ -146,10 +133,10 @@
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||
             Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
-                <input id="flUsuario"
+                <input id="flCodigo"
                        class="cts_forms form-control"
                        asp-for="@Model.Filtro!.Codigo"
-                       placeholder="Usuario" />
+                       placeholder="Codigo" />
                 <br />
 
                 <div class="containers_vn panel panel-default">
@@ -157,9 +144,6 @@
                         <tr>
                             <th>
                                 Codigo
-                            </th>
-                            <th>
-                                Usuario
                             </th>
                             <th class="cl_hidden">
                                 Fecha
@@ -178,9 +162,6 @@
                                 <tr>
                                     <td>
                                         @elemento.Codigo
-                                    </td>
-                                    <td>
-                                        @elemento.Usuario
                                     </td>
                                     <td class="cl_hidden">
                                         @elemento.Fecha
