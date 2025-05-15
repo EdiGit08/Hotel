@@ -55,6 +55,7 @@ GO
 
 CREATE TABLE [Servicios_Reservas] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Codigo] NVARCHAR(50) NOT NULL,
     [Servicio] INT NOT NULL REFERENCES [Servicios] ([Id]),
     [Reserva] INT NOT NULL REFERENCES [Reservas] ([Id])
 );
@@ -62,6 +63,7 @@ GO
 
 CREATE TABLE [Promociones] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Codigo] NVARCHAR(50) NOT NULL,
     [Descuento] SMALLINT NOT NULL DEFAULT 0,
     [Fecha_Inicio] SMALLDATETIME NOT NULL,
     [Fecha_Fin] SMALLDATETIME NOT NULL 
@@ -70,6 +72,7 @@ GO
 
 CREATE TABLE [Pagos] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Codigo] NVARCHAR(50) NOT NULL,
 	[Total] FLOAT NOT NULL,
 	[Medio] NVARCHAR(50) NOT NULL,
 	[Reserva] INT NOT NULL REFERENCES [Reservas] ([Id]),
@@ -112,6 +115,32 @@ CREATE TABLE [Roles_Permisos](
 	[Rol] INT NOT NULL REFERENCES [Roles] ([Id])
 );
 GO
+
+INSERT INTO [Roles] ([Nombre]) VALUES 
+('Administrador'), 
+('Usuario'),
+('Recepcionista');
+
+INSERT INTO [Permisos] ([Tipo]) VALUES 
+('Leer'),
+('Insertar'),
+('Consultar'),
+('Modificar'),
+('Eliminar');
+
+INSERT INTO [Roles_Permisos] ([Codigo], [Permiso], [Rol]) VALUES 
+('R001', 1, 1),  
+('R002', 2, 1),  
+('R003', 3, 1),  
+('R004', 4, 1),  
+('R005', 5, 1),
+('R006', 1, 2),  
+('R007', 2, 2),  
+('R008', 1, 3),  
+('R009', 2, 3),  
+('R010', 3, 3),
+('R011', 4, 3),
+('R012', 5, 3);
 
 INSERT INTO [Habitaciones] ([Nombre], [Estado]) VALUES
 ('M-502', 1),
@@ -158,33 +187,33 @@ INSERT INTO [Servicios] ([Tipo], [Tarifa], [Descripcion]) VALUES
 ('Limpieza', 23000, 'Servicio de limpieza'),
 ('Discoteca', 65000, 'Entrada a la discoteca');
 
-INSERT INTO [Servicios_Reservas] ([Servicio], [Reserva]) VALUES
-(1, 1),
-(2, 2),
-(2, 3),
-(3, 4),
-(1, 5),
-(4, 6),
-(2, 7),
-(4, 8);
+INSERT INTO [Servicios_Reservas] ([Codigo], [Servicio], [Reserva]) VALUES
+('SR001', 1, 1),
+('SR002', 2, 2),
+('SR003', 2, 3),
+('SR004', 3, 4),
+('SR005', 1, 5),
+('SR006', 4, 6),
+('SR007', 2, 7),
+('SR008', 4, 8);
 
-INSERT INTO [Promociones] ([Descuento], [Fecha_inicio], [Fecha_fin]) VALUES
-(0, '2022-06-10', '2022-06-19'),
-(10, '2019-11-01', '2020-03-01'),
-(15, '2025-01-05', '2025-01-20'),
-(22, '2022-12-10', '2023-01-15'),
-(38, '2003-03-01', '2003-03-19'),
-(50, '2022-05-10', '2022-05-29');
+INSERT INTO [Promociones] ([Codigo], [Descuento], [Fecha_inicio], [Fecha_fin]) VALUES
+('P001', 0, '2022-06-10', '2022-06-19'),
+('P002', 10, '2019-11-01', '2020-03-01'),
+('P003', 15, '2025-01-05', '2025-01-20'),
+('P004', 22, '2022-12-10', '2023-01-15'),
+('P005', 38, '2003-03-01', '2003-03-19'),
+('P006', 50, '2022-05-10', '2022-05-29');
 
-INSERT INTO [Pagos] ([Total], [Medio], [Reserva], [Promocion]) VALUES
-(500000, 'Efectivo', 1, 3),
-(250000, 'Tarjeta', 2, 5),
-(6000000, 'Efectivo', 3, 4),
-(120000, 'Transferencia', 4, 1),
-(8000000, 'Tarjeta', 5, 2),
-(6000000, 'Efectivo', 6, 2),
-(250000, 'Efectivo', 7, 6),
-(1000000, 'Tarjeta', 8, 1);
+INSERT INTO [Pagos] ([Codigo], [Total], [Medio], [Reserva], [Promocion]) VALUES
+('PG001', 500000, 'Efectivo', 1, 3),
+('PG002', 250000, 'Tarjeta', 2, 5),
+('PG003', 6000000, 'Efectivo', 3, 4),
+('PG004', 120000, 'Transferencia', 4, 1),
+('PG005', 8000000, 'Tarjeta', 5, 2),
+('PG006', 6000000, 'Efectivo', 6, 2),
+('PG007', 250000, 'Efectivo', 7, 6),
+('PG008', 1000000, 'Tarjeta', 8, 1);
 GO
 
 SELECT [Id], [Cedula], [Nombre], [Opinion] FROM [Clientes];
@@ -204,5 +233,14 @@ SELECT [Id], [Codigo], [Fecha_entrada], [Fecha_salida],[Recepcionista],[Cliente]
 SELECT [Id], [Servicio], [Reserva] FROM [Servicios_Reservas];
 
 SELECT [Id], [Tipo] ,[Tarifa], [Descripcion] FROM [Servicios];
-GO
-                                                                    
+
+SELECT [Id], [Nombre] FROM [Roles];
+
+SELECT [Id], [Nombre], [Contrasena], [Rol] FROM [Usuarios];
+
+SELECT [Id], [Codigo], [Accion], [Fecha] FROM [Auditorias];
+
+SELECT [Id], [Tipo] FROM [Permisos];
+
+SELECT [Id], [Codigo], [Permiso], [Rol] FROM [Roles_Permisos];
+GO                              
