@@ -1,13 +1,18 @@
 ﻿using lib_aplicaciones.Interfaces;
 using lib_dominio.Entidades;
+using lib_dominio.Nucleo;
+using lib_repositorios.Implementaciones;
 using lib_repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace lib_aplicaciones.Implementaciones
 {
     public class HabitacionesAplicacion : IHabitacionesAplicacion
     {
         private IConexion? IConexion = null;
+
+        int Count = 0;
 
         public HabitacionesAplicacion(IConexion iConexion)
         {
@@ -28,6 +33,8 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbNoSeGuardo");
 
             // Calculos
+            Count++;
+            GuardarAuditoria("Borrar Habitacion");
 
             this.IConexion!.Habitaciones!.Remove(entidad);
             this.IConexion.SaveChanges();
@@ -43,6 +50,8 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbYaSeGuardo");
 
             // Calculos
+            Count++;
+            GuardarAuditoria("Guardar Habitacion");
 
             this.IConexion!.Habitaciones!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -70,11 +79,30 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbNoSeGuardo");
 
             // Calculos
+            Count++;
+            GuardarAuditoria("Modificar Habitacion");
+
 
             var entry = this.IConexion!.Entry<Habitaciones>(entidad);
             entry.State = EntityState.Modified;
             this.IConexion.SaveChanges();
             return entidad;
+        }
+
+        public void GuardarAuditoria(string? accion)
+        {
+            var conexion = new Conexion();
+            conexion.StringConexion = "server=localhost; database=db_hotel; Integrated Security=True; TrustServerCertificate=true;";
+
+            var AApp = new AuditoriasAplicacion(conexion);
+            var entidad = new Auditorias
+            {
+                Codigo = "A00" + Count,
+                Accion = accion,
+                Fecha = DateTime.Now
+            };
+
+            AApp.Guardar(entidad);
         }
     }
 }
