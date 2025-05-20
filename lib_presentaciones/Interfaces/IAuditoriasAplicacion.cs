@@ -6,5 +6,8 @@ namespace lib_presentaciones.Interfaces
     {
         Task<List<Auditorias>> Listar();
         Task<List<Auditorias>> PorCodigo(Auditorias? entidad);
+        Task<Auditorias?> Guardar(Auditorias? entidad);
+        Task<Auditorias?> Modificar(Auditorias? entidad);
+        Task<Auditorias?> Borrar(Auditorias? entidad);
     }
 }

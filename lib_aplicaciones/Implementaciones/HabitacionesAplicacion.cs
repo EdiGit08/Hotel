@@ -12,6 +12,8 @@ namespace lib_aplicaciones.Implementaciones
     {
         private IConexion? IConexion = null;
 
+        int Count = 0;
+
         public HabitacionesAplicacion(IConexion iConexion)
         {
             this.IConexion = iConexion;
@@ -31,6 +33,7 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbNoSeGuardo");
 
             // Calculos
+            Count++;
             GuardarAuditoria("Borrar Habitacion");
 
             this.IConexion!.Habitaciones!.Remove(entidad);
@@ -47,7 +50,8 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbYaSeGuardo");
 
             // Calculos
-            GuardarAuditoria("Crear Habitacion");
+            Count++;
+            GuardarAuditoria("Guardar Habitacion");
 
             this.IConexion!.Habitaciones!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -75,6 +79,7 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbNoSeGuardo");
 
             // Calculos
+            Count++;
             GuardarAuditoria("Modificar Habitacion");
 
 
@@ -86,17 +91,18 @@ namespace lib_aplicaciones.Implementaciones
 
         public void GuardarAuditoria(string? accion)
         {
+            var conexion = new Conexion();
+            conexion.StringConexion = "server=localhost; database=db_hotel; Integrated Security=True; TrustServerCertificate=true;";
 
-            Random count = new Random();    
-
-            var con = this.IConexion!.Auditorias!;
-            var entidad = new Auditorias();
+            var AApp = new AuditoriasAplicacion(conexion);
+            var entidad = new Auditorias
             {
-                entidad.Codigo = "AHS" +  count.Next(100,999);
-                entidad.Accion = accion;
-                entidad.Fecha = DateTime.Now;
+                Codigo = "A00" + Count,
+                Accion = accion,
+                Fecha = DateTime.Now
             };
-            this.IConexion.Auditorias.Add(entidad);
+
+            AApp.Guardar(entidad);
         }
     }
 }

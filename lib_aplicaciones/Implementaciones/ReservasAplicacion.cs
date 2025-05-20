@@ -29,8 +29,6 @@ namespace lib_aplicaciones.Implementaciones
 
             // Calculos
 
-            GuardarAuditoria("Borrar Reservas");
-
             this.IConexion!.Reservas!.Remove(entidad);
             this.IConexion.SaveChanges();
             return entidad;
@@ -45,8 +43,6 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbYaSeGuardo");
 
             // Calculos
-
-            GuardarAuditoria("Crear Reservas");
 
             this.IConexion!.Reservas!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -75,27 +71,10 @@ namespace lib_aplicaciones.Implementaciones
 
             // Calculos
 
-            GuardarAuditoria("Modificar Reservas");
-
             var entry = this.IConexion!.Entry<Reservas>(entidad);
             entry.State = EntityState.Modified;
             this.IConexion.SaveChanges();
             return entidad;
-        }
-
-        public void GuardarAuditoria(string? accion)
-        {
-
-            Random count = new Random();
-
-            var con = this.IConexion!.Auditorias!;
-            var entidad = new Auditorias();
-            {
-                entidad.Codigo = "AHS" + count.Next(100, 999);
-                entidad.Accion = accion;
-                entidad.Fecha = DateTime.Now;
-            };
-            this.IConexion.Auditorias!.Add(entidad);
         }
     }
 }

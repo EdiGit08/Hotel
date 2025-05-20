@@ -2,7 +2,6 @@
 using lib_dominio.Entidades;
 using lib_repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace lib_aplicaciones.Implementaciones
 {
@@ -30,8 +29,6 @@ namespace lib_aplicaciones.Implementaciones
 
             // Calculos
 
-            GuardarAuditoria("Borrar Servicios_Reservas");
-
             this.IConexion!.Servicios_Reservas!.Remove(entidad);
             this.IConexion.SaveChanges();
             return entidad;
@@ -46,8 +43,6 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbYaSeGuardo");
 
             // Calculos
-
-            GuardarAuditoria("Crear Servicios_Reservas");
 
             this.IConexion!.Servicios_Reservas!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -76,27 +71,10 @@ namespace lib_aplicaciones.Implementaciones
 
             // Calculos
 
-            GuardarAuditoria("Modificar Servicios_Reservas");
-
             var entry = this.IConexion!.Entry<Servicios_Reservas>(entidad);
             entry.State = EntityState.Modified;
             this.IConexion.SaveChanges();
             return entidad;
-        }
-
-        public void GuardarAuditoria(string? accion)
-        {
-
-            Random count = new Random();
-
-            var con = this.IConexion!.Auditorias!;
-            var entidad = new Auditorias();
-            {
-                entidad.Codigo = "AHS" + count.Next(100, 999);
-                entidad.Accion = accion;
-                entidad.Fecha = DateTime.Now;
-            };
-            this.IConexion.Auditorias!.Add(entidad);
         }
     }
 }
