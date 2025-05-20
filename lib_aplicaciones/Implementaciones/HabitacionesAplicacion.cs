@@ -12,8 +12,6 @@ namespace lib_aplicaciones.Implementaciones
     {
         private IConexion? IConexion = null;
 
-        int Count = 0;
-
         public HabitacionesAplicacion(IConexion iConexion)
         {
             this.IConexion = iConexion;
@@ -33,7 +31,6 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbNoSeGuardo");
 
             // Calculos
-            Count++;
             GuardarAuditoria("Borrar Habitacion");
 
             this.IConexion!.Habitaciones!.Remove(entidad);
@@ -50,8 +47,7 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbYaSeGuardo");
 
             // Calculos
-            Count++;
-            GuardarAuditoria("Guardar Habitacion");
+            GuardarAuditoria("Crear Habitacion");
 
             this.IConexion!.Habitaciones!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -79,7 +75,6 @@ namespace lib_aplicaciones.Implementaciones
                 throw new Exception("lbNoSeGuardo");
 
             // Calculos
-            Count++;
             GuardarAuditoria("Modificar Habitacion");
 
 
@@ -91,18 +86,17 @@ namespace lib_aplicaciones.Implementaciones
 
         public void GuardarAuditoria(string? accion)
         {
-            var conexion = new Conexion();
-            conexion.StringConexion = "server=localhost; database=db_hotel; Integrated Security=True; TrustServerCertificate=true;";
 
-            var AApp = new AuditoriasAplicacion(conexion);
-            var entidad = new Auditorias
+            Random count = new Random();    
+
+            var con = this.IConexion!.Auditorias!;
+            var entidad = new Auditorias();
             {
-                Codigo = "A00" + Count,
-                Accion = accion,
-                Fecha = DateTime.Now
+                entidad.Codigo = "AHS" +  count.Next(100,999);
+                entidad.Accion = accion;
+                entidad.Fecha = DateTime.Now;
             };
-
-            AApp.Guardar(entidad);
+            this.IConexion.Auditorias.Add(entidad);
         }
     }
 }

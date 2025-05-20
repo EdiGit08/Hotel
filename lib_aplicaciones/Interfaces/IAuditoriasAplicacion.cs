@@ -7,9 +7,5 @@ namespace lib_aplicaciones.Interfaces
         void Configurar(string StringConexion);
         List<Auditorias> PorCodigo(Auditorias? entidad);
         List<Auditorias> Listar();
-        Auditorias? Guardar(Auditorias? entidad);
-        Auditorias? Modificar(Auditorias? entidad);
-        Auditorias? Borrar(Auditorias? entidad);
     }
-
 }
