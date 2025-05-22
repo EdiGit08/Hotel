@@ -76,5 +76,20 @@ namespace lib_aplicaciones.Implementaciones
             this.IConexion.SaveChanges();
             return entidad;
         }
+        public void GuardarAuditoria(string? accion)
+        {
+
+            Random count = new Random();
+
+            var con = this.IConexion!.Auditorias!;
+            var entidad = new Auditorias();
+            {
+                entidad.Codigo = "AHS" + count.Next(100, 999);
+                entidad.Accion = accion;
+                entidad.Fecha = DateTime.Now;
+            }
+            ;
+            this.IConexion.Auditorias!.Add(entidad);
+        }
     }
 }

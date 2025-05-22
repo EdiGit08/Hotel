@@ -35,12 +35,12 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
-                //var variable_session = HttpContext.Session.GetString("Usuario");
-                //if (String.IsNullOrEmpty(variable_session))
-                //{
-                //    HttpContext.Response.Redirect("/");
-                //    return;
-                //}
+                var variable_session = HttpContext.Session.GetString("Usuario");
+                if (String.IsNullOrEmpty(variable_session))
+                {
+                    HttpContext.Response.Redirect("/");
+                    return;
+                }
 
                 Filtro!.Codigo = Filtro!.Codigo ?? "";
 
@@ -129,7 +129,7 @@ namespace asp_presentacion.Pages.Ventanas
             }
             catch (Exception ex)
             {
-                LogConversor.Log(ex, ViewData!);
+                LogConversor.Log(ex, "No se puede eliminar", ViewData!);
             }
         }
 
@@ -142,7 +142,7 @@ namespace asp_presentacion.Pages.Ventanas
             }
             catch (Exception ex)
             {
-                LogConversor.Log(ex, ViewData!);
+                LogConversor.Log(ex, "No se puede eliminar", ViewData!);
             }
         }
 

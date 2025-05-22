@@ -73,5 +73,18 @@ namespace asp_presentacion.Pages
                 LogConversor.Log(ex, ViewData!);
             }
         }
+
+        public IActionResult OnPostBtCrear()
+        {
+            try
+            {
+                return RedirectToPage("/Ventanas/Usuarios");
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+            }
+            return Page();
+        }
     }
 }

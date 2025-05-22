@@ -35,13 +35,6 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
-                //var variable_session = HttpContext.Session.GetString("Usuario");
-                //if (String.IsNullOrEmpty(variable_session))
-                //{
-                //    HttpContext.Response.Redirect("/");
-                //    return;
-                //}
-
                 Filtro!.Nombre = Filtro!.Nombre ?? "";
 
                 Accion = Enumerables.Ventanas.Listas;
@@ -115,7 +108,7 @@ namespace asp_presentacion.Pages.Ventanas
             }
             catch (Exception ex)
             {
-                LogConversor.Log(ex, ViewData!);
+                LogConversor.Log(ex, "No se puede eliminar", ViewData!);
             }
         }
 
@@ -129,7 +122,7 @@ namespace asp_presentacion.Pages.Ventanas
             }
             catch (Exception ex)
             {
-                LogConversor.Log(ex, ViewData!);
+                LogConversor.Log(ex, "No se puede eliminar", ViewData!);
             }
         }
 

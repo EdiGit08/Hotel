@@ -96,7 +96,7 @@ namespace lib_aplicaciones.Implementaciones
                 entidad.Accion = accion;
                 entidad.Fecha = DateTime.Now;
             };
-            this.IConexion.Auditorias.Add(entidad);
+            this.IConexion.Auditorias!.Add(entidad);
         }
     }
 }

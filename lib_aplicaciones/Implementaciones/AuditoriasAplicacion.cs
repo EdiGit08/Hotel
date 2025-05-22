@@ -23,10 +23,6 @@ namespace lib_aplicaciones.Implementaciones
             this.IConexion!.StringConexion = StringConexion;
         }
 
-        
-
-
-
         public List<Auditorias> Listar()
         {
             return this.IConexion!.Auditorias!.Take(20).ToList();

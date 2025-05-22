@@ -115,7 +115,7 @@ namespace asp_presentacion.Pages.Ventanas
             }
             catch (Exception ex)
             {
-                LogConversor.Log(ex, ViewData!);
+                LogConversor.Log(ex, "No se puede eliminar", ViewData!);
             }
         }
 
@@ -129,7 +129,7 @@ namespace asp_presentacion.Pages.Ventanas
             }
             catch (Exception ex)
             {
-                LogConversor.Log(ex, ViewData!);
+                LogConversor.Log(ex, "No se puede eliminar", ViewData!);
             }
         }
 
