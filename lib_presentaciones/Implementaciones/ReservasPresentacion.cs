@@ -52,6 +52,12 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
+            // La fecha de salida no puede ser menor a la de ingreso
+            if (entidad!.Fecha_Entrada >= entidad.Fecha_Salida)
+            {
+                throw new Exception();
+            }
+
             var datos = new Dictionary<string, object>();
             datos["Entidad"] = entidad;
 
@@ -73,6 +79,12 @@ namespace lib_presentaciones.Implementaciones
             if (entidad!.Id == 0)
             {
                 throw new Exception("lbFaltaInformacion");
+            }
+
+            // La fecha de salida no puede ser menor a la de ingreso
+            if (entidad!.Fecha_Entrada >= entidad.Fecha_Salida)
+            {
+                throw new Exception();
             }
 
             var datos = new Dictionary<string, object>();

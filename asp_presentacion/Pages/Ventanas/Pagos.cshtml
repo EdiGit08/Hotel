@@ -102,15 +102,19 @@
                                        asp-for="@Model.Actual!.Promocion" />
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="col-lg-6">
                             <label class="col-lg-4 control-label">
                                 Medio
                             </label>
-                            <div class="col-lg-6">
-                                <input id="nmNota2"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Medio" />
-                            </div>
+                            <select id="Medio"
+                                    class="cts_forms form-control"
+                                    asp-for="@Model.Actual!.Medio">
+                                <option value="Efectivo">Efectivo</option>
+                                <option value="Tarjeta">Tarjeta</option>
+                                <option value="Transferencia">Transferencia</option>
+                                <option value="Bono">Bono</option>
+                                <option value="PSE">PSE</option>
+                            </select>
                         </div>
                     </div>
                 </div>

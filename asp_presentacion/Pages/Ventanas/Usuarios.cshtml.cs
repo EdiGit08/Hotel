@@ -108,7 +108,7 @@ namespace asp_presentacion.Pages.Ventanas
             }
             catch (Exception ex)
             {
-                LogConversor.Log(ex, "Los datos no fueron agregados correctamente (asegurese de que las referencias existan)", ViewData!);
+                LogConversor.Log(ex, "Los datos no fueron agregados correctamente", ViewData!);
             }
         }
 

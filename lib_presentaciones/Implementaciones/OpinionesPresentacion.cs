@@ -52,6 +52,9 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
+            //Cantidad por defecto
+            entidad.Cantidad = 1;
+
             var datos = new Dictionary<string, object>();
             datos["Entidad"] = entidad;
 
@@ -74,6 +77,9 @@ namespace lib_presentaciones.Implementaciones
             {
                 throw new Exception("lbFaltaInformacion");
             }
+
+            //Cantidad por defecto
+            entidad.Cantidad = 1;
 
             var datos = new Dictionary<string, object>();
             datos["Entidad"] = entidad;

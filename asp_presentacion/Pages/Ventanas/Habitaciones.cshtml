@@ -63,7 +63,7 @@
                                 Nombre
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmEstudiante"
+                                <input id="Nombre"
                                        class="cts_forms form-control"
                                        asp-for="@Model.Actual!.Nombre" />
                             </div>
@@ -73,21 +73,22 @@
                                 Camas
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmMateria"
+                                <input id="Camas"
                                        class="cts_forms form-control"
                                        asp-for="@Model.Actual!.Camas" />
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Estado
-                            </label>
                             <div class="col-lg-6">
-                                <input id="nmNota2"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Estado" />
-                            </div>
-                        </div>
+                                <label class="col-lg-4 control-label">
+                                    Estado
+                                </label>
+                                <select id="Estado"
+                                        class="cts_forms form-control"
+                                        asp-for="@Model.Actual!.Estado">
+                                    <option value="true">Activa</option>
+                                    <option value="false">Inactiva</option>
+                                </select>
+                           </div>
                     </div>
                 </div>
             }

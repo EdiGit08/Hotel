@@ -52,6 +52,18 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
 
+            // El descuento no puede superar mas del 100% o ser menos de 0%
+            if (entidad!.Descuento! > 100 || entidad.Descuento! < 0)
+            {
+                throw new Exception("Descuento no aplicable");
+            }
+
+            // La fecha final no puede ser menor a la inicial
+            if (entidad!.Fecha_Inicio >= entidad.Fecha_Fin)
+            {
+                throw new Exception("La fecha de inicio no puede ser mayor a la final");
+            }
+
             var datos = new Dictionary<string, object>();
             datos["Entidad"] = entidad;
 
@@ -73,6 +85,18 @@ namespace lib_presentaciones.Implementaciones
             if (entidad!.Id == 0)
             {
                 throw new Exception("lbFaltaInformacion");
+            }
+
+            // El descuento no puede superar mas del 100% o ser menos de 0%
+            if (entidad!.Descuento! > 100 || entidad.Descuento! < 0)
+            {
+                throw new Exception("Descuento no aplicable");
+            }
+
+            // La fecha final no puede ser menor a la inicial
+            if (entidad!.Fecha_Inicio >= entidad.Fecha_Fin)
+            {
+                throw new Exception("La fecha de inicio no puede ser mayor a la final");
             }
 
             var datos = new Dictionary<string, object>();

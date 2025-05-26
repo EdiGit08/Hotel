@@ -56,25 +56,19 @@
                     <h3>Casa</h3>
 
                     <div>
-                        <div class="form-group">
+                         <div class="col-lg-6">
                             <label class="col-lg-4 control-label">
                                 Opcion
                             </label>
-                            <div class="col-lg-6">
-                                <input id="nmEstudiante"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Opcion" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Cantidad
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmMateria"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Cantidad" />
-                            </div>
+                               <select id="Opcion"
+                                        class="cts_forms form-control"
+                                        asp-for="@Model.Actual!.Opcion">
+                                    <option value="Muy Bien">Muy Bien</option>
+                                    <option value="Bien">Bien</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="Mal">Mal</option>
+                                    <option value="Muy mal">Muy mal</option>
+                                </select>
                         </div>
                     </div>
                 </div>
