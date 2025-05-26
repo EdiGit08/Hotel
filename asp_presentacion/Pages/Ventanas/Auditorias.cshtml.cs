@@ -1,8 +1,11 @@
+using asp_presentacion.Pages.Emergentes;
 using lib_dominio.Entidades;
 using lib_dominio.Nucleo;
+using lib_presentaciones.Implementaciones;
 using lib_presentaciones.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Reflection.Metadata.Ecma335;
 
 namespace asp_presentacion.Pages.Ventanas
 {
@@ -39,6 +42,16 @@ namespace asp_presentacion.Pages.Ventanas
                 if (String.IsNullOrEmpty(variable_session))
                 {
                     HttpContext.Response.Redirect("/");
+                    return;
+                }
+
+                // Estas lineas se encargan de revisar si el usuario tiene acceso a la informacion
+                var usuariosPresentacion = new UsuariosPresentacion();
+                var usuarios = usuariosPresentacion.Listar().Result;
+                var usuario = usuarios.FirstOrDefault(u => u.Nombre!.ToLower() == variable_session!.ToLower() && (u.Rol == 1 || u.Rol == 3));
+
+                if (usuario == null)
+                {
                     return;
                 }
 

@@ -1,5 +1,6 @@
 using lib_dominio.Entidades;
 using lib_dominio.Nucleo;
+using lib_presentaciones.Implementaciones;
 using lib_presentaciones.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -42,6 +43,8 @@ namespace asp_presentacion.Pages.Ventanas
                     return;
                 }
 
+                
+
                 Filtro!.Cedula = Filtro!.Cedula ?? "";
 
                 Accion = Enumerables.Ventanas.Listas;
@@ -74,6 +77,9 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 OnPostBtRefrescar();
+
+                if (!ValidarPermiso()) { return; }
+
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
             }
@@ -110,6 +116,9 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 OnPostBtRefrescar();
+
+                if (!ValidarPermiso()) { return; }
+
                 Accion = Enumerables.Ventanas.Borrar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
             }
@@ -158,6 +167,20 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 LogConversor.Log(ex, ViewData!);
             }
+        }
+
+        public bool ValidarPermiso()
+        {
+            var variable_session = HttpContext.Session.GetString("Usuario");
+
+            // Estas lineas se encargan de revisar si el usuario tiene acceso a la informacion o no
+            var usuariosPresentacion = new UsuariosPresentacion();
+            var usuarios = usuariosPresentacion.Listar().Result;
+            var usuario = usuarios.FirstOrDefault(u => u.Nombre!.ToLower() == variable_session!.ToLower() && (u.Rol == 1 || u.Rol == 3));
+
+            if (usuario == null)
+                return false;
+            return true;
         }
     }
 }

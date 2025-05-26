@@ -55,10 +55,6 @@ namespace asp_presentacion.Pages
                     OnPostBtClean();
                     return;
                 }
-                //if (usuario.Rol == 2)
-                //{
-                //    User = true;
-                //}
 
                 ViewData["Logged"] = true;
                 HttpContext.Session.SetString("Usuario", Email!);

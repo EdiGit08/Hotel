@@ -14,7 +14,7 @@ GO
 CREATE TABLE [Recepcionistas] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
     [Carnet] NVARCHAR(10) NOT NULL UNIQUE ,
-    [Nombre] NVARCHAR(100) UNIQUE NOT NULL,
+    [Nombre] NVARCHAR(100) NOT NULL,
     [Salario] FLOAT NOT NULL DEFAULT 0
 );
 GO
@@ -88,7 +88,7 @@ GO
 
 CREATE TABLE [Usuarios](
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[Nombre] NVARCHAR(50) NOT NULL,
+	[Nombre] NVARCHAR(50) NOT NULL UNIQUE,
 	[Contrasena] NVARCHAR(50) NOT NULL,
 	[Rol] INT NOT NULL REFERENCES [Roles] ([Id])
 );
@@ -216,6 +216,10 @@ INSERT INTO [Pagos] ([Codigo], [Total], [Medio], [Reserva], [Promocion]) VALUES
 ('PG008', 1000000, 'Tarjeta', 8, 1);
 GO
 
+INSERT INTO [Usuarios] ([Nombre], [Contrasena], [Rol]) VALUES
+('Admin', 123, 1)
+GO
+
 SELECT [Id], [Cedula], [Nombre], [Opinion] FROM [Clientes];
 
 SELECT [Id],[Nombre], [Camas], [Estado] FROM [Habitaciones];
@@ -243,4 +247,4 @@ SELECT [Id], [Codigo], [Accion], [Fecha] FROM [Auditorias];
 SELECT [Id], [Tipo] FROM [Permisos];
 
 SELECT [Id], [Codigo], [Permiso], [Rol] FROM [Roles_Permisos];
-GO                              
+GO
