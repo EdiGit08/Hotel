@@ -1,4 +1,5 @@
 using lib_dominio.Nucleo;
+using lib_presentaciones.Implementaciones;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -44,11 +45,21 @@ namespace asp_presentacion.Pages
                     return;
                 }
 
-                if ("admin.123" != Email + "." + Contrasena)
+                // Consulta los usuarios en la base de datos para compararlos con las variables del loggin
+                var usuariosPresentacion = new UsuariosPresentacion();
+                var usuarios = usuariosPresentacion.Listar().Result;
+                var usuario = usuarios.FirstOrDefault(u => u.Nombre!.ToLower() == Email!.ToLower() && u.Contrasena == Contrasena);
+
+                if (usuario == null)
                 {
                     OnPostBtClean();
                     return;
                 }
+                //if (usuario.Rol == 2)
+                //{
+                //    User = true;
+                //}
+
                 ViewData["Logged"] = true;
                 HttpContext.Session.SetString("Usuario", Email!);
                 EstaLogueado = true;
@@ -78,7 +89,7 @@ namespace asp_presentacion.Pages
         {
             try
             {
-                return RedirectToPage("/Ventanas/Usuarios");
+                return RedirectToPage("/Ventanas/Usuarios", new {accion = "nuevo"});
             }
             catch (Exception ex)
             {

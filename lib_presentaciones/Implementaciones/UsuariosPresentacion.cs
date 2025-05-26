@@ -53,6 +53,10 @@ namespace lib_presentaciones.Implementaciones
             }
 
             var datos = new Dictionary<string, object>();
+
+            // Se le asigna 2(Cliente) por default
+            entidad.Rol = 2;
+
             datos["Entidad"] = entidad;
 
             comunicaciones = new Comunicaciones();

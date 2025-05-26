@@ -29,10 +29,24 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public Usuarios? Filtro { get; set; }
         [BindProperty] public List<Usuarios>? Lista { get; set; }
 
-        public virtual void OnGet() { OnPostBtRefrescar(); }
+        public virtual void OnGet(string? accion = "") {
+            if (accion == "nuevo")
+                OnPostBtNuevo();
+            else
+                OnPostBtRefrescar(); 
+        }
+
+        public enum Ventana{ EditarUser = 3 }
 
         public void OnPostBtRefrescar()
         {
+            var variable_session = HttpContext.Session.GetString("Usuario");
+            if (String.IsNullOrEmpty(variable_session))
+            {
+                HttpContext.Response.Redirect("/");
+                return;
+            }
+
             try
             {
                 Filtro!.Nombre = Filtro!.Nombre ?? "";
@@ -67,7 +81,7 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 OnPostBtRefrescar();
-                Accion = Enumerables.Ventanas.Editar;
+                Accion = (Enumerables.Ventanas)Ventana.EditarUser;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
             }
             catch (Exception ex)
@@ -80,7 +94,7 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
-                Accion = Enumerables.Ventanas.Editar;
+                Accion = (Enumerables.Ventanas)Ventana.EditarUser;
 
                 Task<Usuarios>? task = null;
                 if (Actual!.Id == 0)
@@ -94,7 +108,7 @@ namespace asp_presentacion.Pages.Ventanas
             }
             catch (Exception ex)
             {
-                LogConversor.Log(ex, ViewData!);
+                LogConversor.Log(ex, "Los datos no fueron agregados correctamente (asegurese de que las referencias existan)", ViewData!);
             }
         }
 
