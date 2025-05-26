@@ -9,18 +9,22 @@ namespace asp_presentacion.Pages.Ventanas
     public class ClientesModel : PageModel
     {
         private IClientesPresentacion? iPresentacion = null;
+        private IOpinionesPresentacion? iopiniones = null;
 
-        public ClientesModel(IClientesPresentacion iPresentacion)
+        public ClientesModel(IClientesPresentacion iPresentacion, IOpinionesPresentacion? iopiniones)
         {
             try
             {
                 this.iPresentacion = iPresentacion;
+                this.iopiniones = iopiniones;
                 Filtro = new Clientes();
             }
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
             }
+
+            this.iopiniones = iopiniones;
         }
 
         public IFormFile? FormFile { get; set; }
@@ -28,6 +32,7 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public Clientes? Actual { get; set; }
         [BindProperty] public Clientes? Filtro { get; set; }
         [BindProperty] public List<Clientes>? Lista { get; set; }
+        [BindProperty] public List<Opiniones>? Opiniones { get; set; }
 
         public virtual void OnGet() { OnPostBtRefrescar(); }
 
@@ -56,12 +61,27 @@ namespace asp_presentacion.Pages.Ventanas
             }
         }
 
+        private void CargarCombox()
+        {
+            try
+            {
+                var task = this.iopiniones!.Listar();
+                task.Wait();
+                Opiniones = task.Result;
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+            }
+        }
+
         public virtual void OnPostBtNuevo()
         {
             try
             {
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new Clientes();
+                CargarCombox();
             }
             catch (Exception ex)
             {
@@ -74,6 +94,7 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 OnPostBtRefrescar();
+                CargarCombox();
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
             }
