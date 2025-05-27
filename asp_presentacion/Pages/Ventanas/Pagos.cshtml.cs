@@ -132,6 +132,7 @@ namespace asp_presentacion.Pages.Ventanas
                 task.Wait();
                 Actual = task.Result;
                 Accion = Enumerables.Ventanas.Listas;
+                
                 OnPostBtRefrescar();
             }
             catch (Exception ex)

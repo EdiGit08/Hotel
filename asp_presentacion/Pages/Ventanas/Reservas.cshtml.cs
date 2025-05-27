@@ -126,9 +126,9 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 Accion = Enumerables.Ventanas.Editar;
-
+                int id= Actual!.Id;
                 Task<Reservas>? task = null;
-                if (Actual!.Id == 0)
+                if (id == 0)
                     task = this.iPresentacion!.Guardar(Actual!)!;
                 else
                     task = this.iPresentacion!.Modificar(Actual!)!;
