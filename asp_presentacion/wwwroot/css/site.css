@@ -2,26 +2,40 @@ a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
+    font-weight: bold;
+    color: #2c3e50; /* Color más oscuro para un toque elegante */
 }
 
 a {
-    color: #0366d6;
+    color: #2980b9; /* Color azul más suave */
+    text-decoration: none; /* Sin subrayado */
 }
+
+    a:hover {
+        text-decoration: underline; /* Subrayado al pasar el mouse */
+    }
 
 .btn-primary {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #3498db; /* Color azul más claro */
+    border-color: #2980b9; /* Color de borde más suave */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s; /* Transición suave */
 }
+
+    .btn-primary:hover {
+        background-color: #2980b9; /* Color al pasar el mouse */
+    }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #2980b9; /* Color de fondo más suave */
+    border-color: #1b6ec2; /* Color de borde */
 }
 
 html {
     font-size: 14px;
+    font-family: 'Arial', sans-serif; /* Fuente más elegante */
 }
 
 @media (min-width: 768px) {
@@ -31,20 +45,23 @@ html {
 }
 
 .border-top {
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #dcdcdc; /* Color de borde más suave */
 }
 
 .border-bottom {
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #dcdcdc; /* Color de borde más suave */
 }
 
 .box-shadow {
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1); /* Sombra más sutil */
 }
 
 button.accept-policy {
     font-size: 1rem;
     line-height: inherit;
+    background-color: #ecf0f1; /* Color de fondo suave */
+    border: 1px solid #bdc3c7; /* Borde suave */
+    border-radius: 5px; /* Bordes redondeados */
 }
 
 html {
@@ -54,6 +71,8 @@ html {
 
 body {
     margin-bottom: 60px;
+    background-color: #f8f9fa; /* Color de fondo claro */
+    color: #34495e; /* Color de texto más oscuro */
 }
 
 .footer {
@@ -62,16 +81,21 @@ body {
     width: 100%;
     white-space: nowrap;
     line-height: 60px;
+    background-color: #2c3e50; /* Fondo oscuro para el pie de página */
+    color: #ecf0f1; /* Color de texto claro */
 }
 
 .card_index {
-    background-color: white;
+    background-color: #ffffff; /* Fondo blanco */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1); /* Sombra sutil */
 }
 
 /* Screens --------------------- */
 .tb_data {
     width: 100%;
     border-radius: 10px;
+    overflow: hidden; /* Para bordes redondeados */
 }
 
 .cts_forms {
@@ -107,7 +131,6 @@ body {
     display: inline-block;
 }
 
-
 .popup {
     position: fixed;
     width: 100%;
@@ -117,7 +140,7 @@ body {
     right: 0;
     bottom: 0;
     margin: auto;
-    background-color: rgba(0,0,0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo más oscuro para el popup */
 }
 
 .pp_inner {
@@ -131,6 +154,8 @@ body {
     height: 440px;
     margin: auto;
     background: white;
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .2); /* Sombra más pronunciada */
 }
 
 .pp_del_inner, .pp_ms_inner {
@@ -144,4 +169,6 @@ body {
     height: 200px;
     margin: auto;
     background: white;
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .2); /* Sombra más pronunciada */
 }

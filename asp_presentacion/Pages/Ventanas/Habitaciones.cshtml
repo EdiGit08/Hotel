@@ -78,6 +78,16 @@
                                 asp-for="@Model.Actual!.Camas" />
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Imagen
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="Imagen"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Imagen" />
+                            </div>
+                        </div>
                         <div class="col-lg-6">
                             <label class="col-lg-4 control-label">
                                 Estado
@@ -155,6 +165,9 @@
                                 Estado
                             </th>
                             <th class="cl_actions">
+                                Imagen
+                            </th>
+                            <th class="cl_actions">
                                 Accion
                             </th>
                         </tr>
@@ -183,6 +196,14 @@
                                       <td class="cl_hidden">
                                         Libre
                                     </td>}
+
+                                    <td>
+                                        <div style="text-align: center;">
+                                            <img src="@elemento.Imagen" alt="Imagen" style="width: 100px; height: 100px; border: 1px solid #ccc; object-fit: cover;" />
+                                        </div>
+
+                                    </td>
+
                                     <td>
                                         <input type="submit"
                                                value="Modicar"
