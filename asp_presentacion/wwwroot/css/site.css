@@ -3,11 +3,11 @@ a.navbar-brand {
     text-align: center;
     word-break: break-all;
     font-weight: bold;
-    color: #2c3e50; /* Color más oscuro para un toque elegante */
+    color: #7b1e3d; /* burdeos llamativo y elegante */
 }
 
 a {
-    color: #2980b9; /* Color azul más suave */
+    color: #ba4a00; /* naranja quemado */
     text-decoration: none; /* Sin subrayado */
 }
 
@@ -17,20 +17,20 @@ a {
 
 .btn-primary {
     color: #fff;
-    background-color: #3498db; /* Color azul más claro */
-    border-color: #2980b9; /* Color de borde más suave */
+    background-color: #a02030; /* rojo burdeos oscuro */
+    border-color: #7b1e3d; /* borde burdeos */
     border-radius: 5px; /* Bordes redondeados */
     transition: background-color 0.3s; /* Transición suave */
 }
 
     .btn-primary:hover {
-        background-color: #2980b9; /* Color al pasar el mouse */
+        background-color: #7b1e3d; /* Color al pasar el mouse */
     }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
-    background-color: #2980b9; /* Color de fondo más suave */
-    border-color: #1b6ec2; /* Color de borde */
+    background-color: #7b1e3d; /* fondo burdeos */
+    border-color: #510026; /* borde más oscuro */
 }
 
 html {
@@ -45,23 +45,24 @@ html {
 }
 
 .border-top {
-    border-top: 1px solid #dcdcdc; /* Color de borde más suave */
+    border-top: 1px solid #d1b280; /* dorado suave */
 }
 
 .border-bottom {
-    border-bottom: 1px solid #dcdcdc; /* Color de borde más suave */
+    border-bottom: 1px solid #d1b280; /* dorado suave */
 }
 
 .box-shadow {
-    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1); /* Sombra más sutil */
+    box-shadow: 0 .5rem 1rem rgba(123, 30, 61, 0.25); /* sombra burdeos translúcida */
 }
 
 button.accept-policy {
     font-size: 1rem;
     line-height: inherit;
-    background-color: #ecf0f1; /* Color de fondo suave */
-    border: 1px solid #bdc3c7; /* Borde suave */
+    background-color: #f3e5ab; /* beige dorado */
+    border: 1px solid #a0814f; /* borde dorado oscuro */
     border-radius: 5px; /* Bordes redondeados */
+    color: #7b1e3d;
 }
 
 html {
@@ -71,8 +72,8 @@ html {
 
 body {
     margin-bottom: 60px;
-    background-color: #f8f9fa; /* Color de fondo claro */
-    color: #34495e; /* Color de texto más oscuro */
+    background-color: #fff5f7; /* rosa pálido */
+    color: #4a1f2e; /* burdeos oscuro */
 }
 
 .footer {
@@ -81,14 +82,14 @@ body {
     width: 100%;
     white-space: nowrap;
     line-height: 60px;
-    background-color: #2c3e50; /* Fondo oscuro para el pie de página */
-    color: #ecf0f1; /* Color de texto claro */
+    background-color: #7b1e3d; /* burdeos sólido para pie */
+    color: #f3e5ab; /* dorado claro */
 }
 
 .card_index {
     background-color: #ffffff; /* Fondo blanco */
     border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1); /* Sombra sutil */
+    box-shadow: 0 .5rem 1rem rgba(123, 30, 61, 0.2); /* Sombra burdeos */
 }
 
 /* Screens --------------------- */
@@ -140,7 +141,7 @@ body {
     right: 0;
     bottom: 0;
     margin: auto;
-    background-color: rgba(0, 0, 0, 0.7); /* Fondo más oscuro para el popup */
+    background-color: rgba(123, 30, 61, 0.8); /* fondo burdeos translúcido */
 }
 
 .pp_inner {
@@ -153,9 +154,9 @@ body {
     max-width: 500px;
     height: 440px;
     margin: auto;
-    background: white;
+    background: #fff3f8; /* rosa pálido de fondo */
     border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .2); /* Sombra más pronunciada */
+    box-shadow: 0 .5rem 1rem rgba(123, 30, 61, 0.4); /* Sombra burdeos */
 }
 
 .pp_del_inner, .pp_ms_inner {
@@ -168,7 +169,7 @@ body {
     max-width: 500px;
     height: 200px;
     margin: auto;
-    background: white;
+    background: #fff3f8; /* rosa pálido */
     border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .2); /* Sombra más pronunciada */
+    box-shadow: 0 .5rem 1rem rgba(123, 30, 61, 0.4); /* Sombra burdeos */
 }

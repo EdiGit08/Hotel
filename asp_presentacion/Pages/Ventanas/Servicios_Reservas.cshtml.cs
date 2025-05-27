@@ -9,12 +9,19 @@ namespace asp_presentacion.Pages.Ventanas
     public class Servicios_ReservasModel : PageModel
     {
         private IServicios_ReservasPresentacion? iPresentacion = null;
+        private IServiciosPresentacion? iServicios = null;
+        private IReservasPresentacion? iReservas = null;
 
-        public Servicios_ReservasModel(IServicios_ReservasPresentacion iPresentacion)
+
+        public Servicios_ReservasModel(IServicios_ReservasPresentacion iPresentacion,
+            IServiciosPresentacion? iServicios,
+            IReservasPresentacion? iReservas)
         {
             try
             {
                 this.iPresentacion = iPresentacion;
+                this.iServicios = iServicios;
+                this.iReservas = iReservas;
                 Filtro = new Servicios_Reservas();
             }
             catch (Exception ex)
@@ -28,6 +35,9 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public Servicios_Reservas? Actual { get; set; }
         [BindProperty] public Servicios_Reservas? Filtro { get; set; }
         [BindProperty] public List<Servicios_Reservas>? Lista { get; set; }
+        [BindProperty] public List<Servicios>? Servicios { get; set; }
+        [BindProperty] public List<Reservas>? Reservas { get; set; }
+
 
         public virtual void OnGet() { OnPostBtRefrescar(); }
 
@@ -55,6 +65,22 @@ namespace asp_presentacion.Pages.Ventanas
                 LogConversor.Log(ex, ViewData!);
             }
         }
+        private void CargarCombox()
+        {
+            try
+            {
+                var task = this.iServicios!.Listar();
+                var task2 = this.iReservas!.Listar();
+                task.Wait();
+                task2.Wait();
+                Servicios = task.Result;
+                Reservas = task2.Result;
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+            }
+        }
 
         public virtual void OnPostBtNuevo()
         {
@@ -62,6 +88,7 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new Servicios_Reservas();
+                CargarCombox();
             }
             catch (Exception ex)
             {
@@ -74,6 +101,7 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 OnPostBtRefrescar();
+                CargarCombox();
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
             }

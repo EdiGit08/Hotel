@@ -9,12 +9,19 @@ namespace asp_presentacion.Pages.Ventanas
     public class Roles_PermisosModel : PageModel
     {
         private IRoles_PermisosPresentacion? iPresentacion = null;
+        private IRolesPresentacion? iRoles = null;
+        private IPermisosPresentacion? iPermisos = null;
 
-        public Roles_PermisosModel(IRoles_PermisosPresentacion iPresentacion)
+
+        public Roles_PermisosModel(IRoles_PermisosPresentacion iPresentacion,
+             IRolesPresentacion? iRoles,
+             IPermisosPresentacion? iPermisos)
         {
             try
             {
                 this.iPresentacion = iPresentacion;
+                this.iRoles = iRoles;
+                this.iPermisos = iPermisos;
                 Filtro = new Roles_Permisos();
             }
             catch (Exception ex)
@@ -28,6 +35,8 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public Roles_Permisos? Actual { get; set; }
         [BindProperty] public Roles_Permisos? Filtro { get; set; }
         [BindProperty] public List<Roles_Permisos>? Lista { get; set; }
+        [BindProperty] public List<Roles>? Roles { get; set; }
+        [BindProperty] public List<Permisos>? Permisos { get; set; }
 
         public virtual void OnGet() { OnPostBtRefrescar(); }
 
@@ -56,12 +65,31 @@ namespace asp_presentacion.Pages.Ventanas
             }
         }
 
+
+        private void CargarCombox()
+        {
+            try
+            {
+                var task = this.iPermisos!.Listar();
+                var task2 = this.iRoles!.Listar();
+                task.Wait();
+                task2.Wait();
+                Permisos = task.Result;
+                Roles = task2.Result;
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+            }
+        }
+
         public virtual void OnPostBtNuevo()
         {
             try
             {
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new Roles_Permisos();
+                CargarCombox();
             }
             catch (Exception ex)
             {
@@ -74,6 +102,7 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 OnPostBtRefrescar();
+                CargarCombox();
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
             }
