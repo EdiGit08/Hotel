@@ -37,9 +37,9 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public List<Servicios_Reservas>? Lista { get; set; }
         [BindProperty] public List<Servicios>? Servicios { get; set; }
         [BindProperty] public List<Reservas>? Reservas { get; set; }
+        [BindProperty] public int IdR { get; set; }
 
-
-        public virtual void OnGet() { OnPostBtRefrescar(); }
+        public virtual void OnGet(int Id) { IdR = Id; OnPostBtNuevo(); }
 
         public void OnPostBtRefrescar()
         {
@@ -89,6 +89,8 @@ namespace asp_presentacion.Pages.Ventanas
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new Servicios_Reservas();
                 CargarCombox();
+
+                Actual._Reserva = Reservas!.FirstOrDefault(x => x.Id == IdR);
             }
             catch (Exception ex)
             {
@@ -116,6 +118,9 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 Accion = Enumerables.Ventanas.Editar;
+
+                Actual!.Reserva = IdR;
+                Actual!._Reserva = null;
 
                 Task<Servicios_Reservas>? task = null;
                 if (Actual!.Id == 0)

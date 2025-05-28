@@ -48,8 +48,6 @@ namespace asp_presentacion.Pages.Ventanas
                     return;
                 }
 
-                
-
                 Filtro!.Cedula = Filtro!.Cedula ?? "";
 
                 Accion = Enumerables.Ventanas.Listas;

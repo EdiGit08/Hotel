@@ -121,19 +121,23 @@ namespace asp_presentacion.Pages.Ventanas
             }
         }
 
-        public virtual void OnPostBtGuardar()
+        public virtual IActionResult OnPostBtGuardar()
         {
             try
             {
                 Accion = Enumerables.Ventanas.Editar;
-                int id= Actual!.Id;
+                int Id= Actual!.Id;
                 Task<Reservas>? task = null;
-                if (id == 0)
+                if (Actual!.Id == 0)
                     task = this.iPresentacion!.Guardar(Actual!)!;
                 else
                     task = this.iPresentacion!.Modificar(Actual!)!;
                 task.Wait();
                 Actual = task.Result;
+
+                if (Id == 0)
+                    return RedirectToPage("/Ventanas/Servicios_Reservas", new { Id = Actual.Id });
+
                 Accion = Enumerables.Ventanas.Listas;
                 OnPostBtRefrescar();
             }
@@ -141,6 +145,7 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 LogConversor.Log(ex, "Los datos no fueron agregados correctamente", ViewData!);
             }
+            return Page();
         }
 
         public virtual void OnPostBtBorrarVal(string data)
