@@ -10,12 +10,21 @@ namespace asp_presentacion.Pages.Ventanas
     public class ReservasModel : PageModel
     {
         private IReservasPresentacion? iPresentacion = null;
+        private IClientesPresentacion? iclientes = null;
+        private IRecepcionistasPresentacion? irecepcionistas = null;
+        private IHabitacionesPresentacion? ihabitaciones = null;
 
-        public ReservasModel(IReservasPresentacion iPresentacion)
+        public ReservasModel(IReservasPresentacion iPresentacion,
+            IClientesPresentacion? iclientes,
+            IRecepcionistasPresentacion? irecepcionistas,
+            IHabitacionesPresentacion? ihabitaciones)
         {
             try
             {
                 this.iPresentacion = iPresentacion;
+                this.iclientes = iclientes;
+                this.ihabitaciones=ihabitaciones;
+                this.irecepcionistas=irecepcionistas;
                 Filtro = new Reservas();
             }
             catch (Exception ex)
@@ -29,6 +38,9 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public Reservas? Actual { get; set; }
         [BindProperty] public Reservas? Filtro { get; set; }
         [BindProperty] public List<Reservas>? Lista { get; set; }
+        [BindProperty] public List<Clientes>? Clientes { get; set; }
+        [BindProperty] public List<Habitaciones>? Habitaciones { get; set; }
+        [BindProperty] public List<Recepcionistas>? Recepcionistas { get; set; }
 
         public virtual void OnGet() { OnPostBtRefrescar(); }
 
@@ -57,12 +69,33 @@ namespace asp_presentacion.Pages.Ventanas
             }
         }
 
+        private void CargarCombox()
+        {
+            try
+            {
+                var task = this.ihabitaciones!.Listar();
+                var task2 = this.iclientes!.Listar();
+                var task3 = this.irecepcionistas!.Listar();
+                task.Wait();
+                task2.Wait();
+                task3.Wait();
+                Habitaciones = task.Result;
+                Clientes = task2.Result;
+                Recepcionistas = task3.Result;
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+            }
+        }
+
         public virtual void OnPostBtNuevo()
         {
             try
             {
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new Reservas();
+                CargarCombox();
             }
             catch (Exception ex)
             {
@@ -78,6 +111,7 @@ namespace asp_presentacion.Pages.Ventanas
 
                 if (!ValidarPermiso()) { return; }
 
+                CargarCombox();
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
             }
@@ -87,12 +121,12 @@ namespace asp_presentacion.Pages.Ventanas
             }
         }
 
-        public virtual void OnPostBtGuardar()
+        public virtual IActionResult OnPostBtGuardar()
         {
             try
             {
                 Accion = Enumerables.Ventanas.Editar;
-
+                int Id= Actual!.Id;
                 Task<Reservas>? task = null;
                 if (Actual!.Id == 0)
                     task = this.iPresentacion!.Guardar(Actual!)!;
@@ -100,6 +134,10 @@ namespace asp_presentacion.Pages.Ventanas
                     task = this.iPresentacion!.Modificar(Actual!)!;
                 task.Wait();
                 Actual = task.Result;
+
+                if (Id == 0)
+                    return RedirectToPage("/Ventanas/Servicios_Reservas", new { Id = Actual.Id });
+
                 Accion = Enumerables.Ventanas.Listas;
                 OnPostBtRefrescar();
             }
@@ -107,6 +145,7 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 LogConversor.Log(ex, "Los datos no fueron agregados correctamente", ViewData!);
             }
+            return Page();
         }
 
         public virtual void OnPostBtBorrarVal(string data)

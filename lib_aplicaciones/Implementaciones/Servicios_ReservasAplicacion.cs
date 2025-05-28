@@ -56,12 +56,18 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<Servicios_Reservas> Listar()
         {
-            return this.IConexion!.Servicios_Reservas!.Take(20).ToList();
+            return this.IConexion!.Servicios_Reservas!
+                .Include(b => b._Servicio)
+                .Include(v => v._Reserva)
+                .Take(20)
+                .ToList();
         }
 
         public List<Servicios_Reservas> PorCodigo(Servicios_Reservas? entidad)
         {
             return this.IConexion!.Servicios_Reservas!
+                .Include(b => b._Servicio)
+                .Include(v => v._Reserva)
                 .Where(x => x.Codigo!.Contains(entidad!.Codigo!))
                 .ToList();
         }

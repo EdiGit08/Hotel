@@ -57,12 +57,18 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<Pagos> Listar()
         {
-            return this.IConexion!.Pagos!.Take(20).ToList();
+            return this.IConexion!.Pagos!
+                .Include(b => b._Promocion)
+                .Include(v => v._Reserva)
+                .Take(20)
+                .ToList();
         }
 
         public List<Pagos> PorCodigo(Pagos? entidad)
         {
             return this.IConexion!.Pagos!
+                .Include(b => b._Promocion)
+                .Include(v => v._Reserva)
                 .Where(x => x.Codigo!.Contains(entidad!.Codigo!))
                 .ToList();
         }

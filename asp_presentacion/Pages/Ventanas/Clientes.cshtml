@@ -82,11 +82,14 @@
                                 <label class="col-lg-4 control-label">
                                     Opinion
                                 </label>
-                                <div class="col-lg-6">
-                                    <input id="nmNota2"
-                                           class="cts_forms form-control"
-                                           asp-for="@Model.Actual!.Opinion" />
-                                </div>
+                            <div class="col-lg-6">
+                                <select id="nmDistribuidor"
+                                        class="form-control"
+                                        asp-for="@Model.Actual!.Opinion"
+                                        asp-items="@(new SelectList(Model.Opiniones, "Id", "Opcion"))">
+                                </select>
+                            </div>
+
                             </div>
                         </div>
                     </div>
@@ -168,7 +171,7 @@
                                         @elemento.Nombre
                                                 </td>
                                                 <td class="cl_hidden">
-                                        @elemento.Opinion
+                                        @elemento._Opinion!.Opcion
                                                 </td>
                                                 <td>
                                                     <input type="submit"

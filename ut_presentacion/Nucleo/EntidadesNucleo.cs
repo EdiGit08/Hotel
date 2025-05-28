@@ -86,5 +86,36 @@ namespace ut_presentacion.Nucleo
             entidad.Promocion = 2;
             return entidad;
         }
+
+        public static Usuarios? Usuarios()
+        {
+            var entidad = new Usuarios();
+            entidad.Nombre = "Octavio";
+            entidad.Contrasena = "contrasena";
+            entidad.Rol = 2;
+            return entidad;
+        }
+
+        public static Roles? Roles()
+        {
+            var entidad = new Roles();
+            entidad.Nombre = "Contador";
+            return entidad;
+        }
+        public static Permisos? Permisos()
+        {
+            var entidad = new Permisos();
+            entidad.Tipo = "Editar";
+
+            return entidad;
+        }
+        public static Auditorias? Auditorias()
+        {
+            var entidad = new Auditorias();
+            entidad.Codigo = "Prueba 234";
+            entidad.Fecha = DateTime.Now;
+            entidad.Accion = "Eliminar Reservas";
+            return entidad;
+        }
     }
 }

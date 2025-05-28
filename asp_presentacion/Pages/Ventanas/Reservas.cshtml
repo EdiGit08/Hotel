@@ -89,9 +89,11 @@
                                 Cliente
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmNota1"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Cliente" />
+                                <select id="nmDistribuidor"
+                                        class="form-control"
+                                        asp-for="@Model.Actual!.Cliente"
+                                        asp-items="@(new SelectList(Model.Clientes, "Id", "Nombre"))">
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -99,9 +101,11 @@
                                 Recepcionista
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmNota1"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Recepcionista" />
+                                <select id="nmDistribuidor"
+                                        class="form-control"
+                                        asp-for="@Model.Actual!.Recepcionista"
+                                        asp-items="@(new SelectList(Model.Recepcionistas, "Id", "Nombre"))">
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -109,9 +113,11 @@
                                 Habitacion
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmNota1"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Habitacion" />
+                                <select id="nmDistribuidor"
+                                        class="form-control"
+                                        asp-for="@Model.Actual!.Habitacion"
+                                        asp-items="@(new SelectList(Model.Habitaciones, "Id", "Nombre"))">
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -213,13 +219,13 @@
                                         @elemento.Fecha_Entrada
                                     </td>
                                     <td class="cl_hidden">
-                                        @elemento.Cliente
+                                        @elemento._Cliente!.Nombre
                                     </td>
                                     <td class="cl_hidden">
-                                        @elemento.Recepcionista
+                                        @elemento._Recepcionista!.Nombre
                                     </td>
                                     <td class="cl_hidden">
-                                        @elemento.Habitacion
+                                        @elemento._Habitacion!.Nombre
                                     </td>
                                     <td class="cl_hidden">
                                         @elemento.Fecha_Salida

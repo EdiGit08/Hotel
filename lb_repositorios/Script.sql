@@ -7,7 +7,8 @@ CREATE TABLE [Habitaciones] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
     [Nombre] NVARCHAR(100) NOT NULL,
     [Camas] INT NOT NULL DEFAULT 1,
-    [Estado] BIT NOT NULL DEFAULT 0
+    [Estado] BIT NOT NULL DEFAULT 0,
+	[Imagen] NVARCHAR(100) NOT NULL,
 );
 GO
 
@@ -142,12 +143,12 @@ INSERT INTO [Roles_Permisos] ([Codigo], [Permiso], [Rol]) VALUES
 ('R011', 4, 3),
 ('R012', 5, 3);
 
-INSERT INTO [Habitaciones] ([Nombre], [Estado]) VALUES
-('M-502', 1),
-('H-306', 1),
-('L-609', 1),
-('J-807', 1),
-('K-901', 1);
+INSERT INTO [Habitaciones] ([Nombre], [Estado], [Imagen]) VALUES
+('M-502', 1, '/images/photo1.jpg'),
+('H-306', 1, '/images/photo2.jpg'),
+('L-609', 1, '/images/photo3.jpg'),
+('J-807', 1, '/images/photo4.jpg'),
+('K-901', 2, '/images/photo5.jpg');
 
 INSERT INTO [Recepcionistas] ([Carnet], [Nombre], [Salario]) VALUES
 ('6003', 'Juan Cardona', 3000.00),
@@ -217,7 +218,7 @@ INSERT INTO [Pagos] ([Codigo], [Total], [Medio], [Reserva], [Promocion]) VALUES
 GO
 
 INSERT INTO [Usuarios] ([Nombre], [Contrasena], [Rol]) VALUES
-('Admin', 123, 1)
+('Admin', '123', 1)
 GO
 
 SELECT [Id], [Cedula], [Nombre], [Opinion] FROM [Clientes];

@@ -55,12 +55,20 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<Reservas> Listar()
         {
-            return this.IConexion!.Reservas!.Take(20).ToList();
+            return this.IConexion!.Reservas!
+                .Include(x => x._Habitacion)
+                .Include(y => y._Cliente)
+                .Include(w => w._Recepcionista)
+                .Take(20)
+                .ToList();
         }
 
         public List<Reservas> PorCodigo(Reservas? entidad)
         {
             return this.IConexion!.Reservas!
+                .Include(x => x._Habitacion)
+                .Include(y => y._Cliente)
+                .Include(w => w._Recepcionista)
                 .Where(x => x.Codigo!.Contains(entidad!.Codigo!))
                 .ToList();
         }

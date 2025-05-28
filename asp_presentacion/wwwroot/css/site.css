@@ -2,26 +2,40 @@ a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
+    font-weight: bold;
+    color: #7b1e3d; /* burdeos llamativo y elegante */
 }
 
 a {
-    color: #0366d6;
+    color: #ba4a00; /* naranja quemado */
+    text-decoration: none; /* Sin subrayado */
 }
+
+    a:hover {
+        text-decoration: underline; /* Subrayado al pasar el mouse */
+    }
 
 .btn-primary {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #a02030; /* rojo burdeos oscuro */
+    border-color: #7b1e3d; /* borde burdeos */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s; /* Transición suave */
 }
+
+    .btn-primary:hover {
+        background-color: #7b1e3d; /* Color al pasar el mouse */
+    }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #7b1e3d; /* fondo burdeos */
+    border-color: #510026; /* borde más oscuro */
 }
 
 html {
     font-size: 14px;
+    font-family: 'Arial', sans-serif; /* Fuente más elegante */
 }
 
 @media (min-width: 768px) {
@@ -31,20 +45,24 @@ html {
 }
 
 .border-top {
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #d1b280; /* dorado suave */
 }
 
 .border-bottom {
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #d1b280; /* dorado suave */
 }
 
 .box-shadow {
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .5rem 1rem rgba(123, 30, 61, 0.25); /* sombra burdeos translúcida */
 }
 
 button.accept-policy {
     font-size: 1rem;
     line-height: inherit;
+    background-color: #f3e5ab; /* beige dorado */
+    border: 1px solid #a0814f; /* borde dorado oscuro */
+    border-radius: 5px; /* Bordes redondeados */
+    color: #7b1e3d;
 }
 
 html {
@@ -54,6 +72,8 @@ html {
 
 body {
     margin-bottom: 60px;
+    background-color: #fff5f7; /* rosa pálido */
+    color: #4a1f2e; /* burdeos oscuro */
 }
 
 .footer {
@@ -62,16 +82,21 @@ body {
     width: 100%;
     white-space: nowrap;
     line-height: 60px;
+    background-color: #7b1e3d; /* burdeos sólido para pie */
+    color: #f3e5ab; /* dorado claro */
 }
 
 .card_index {
-    background-color: white;
+    background-color: #ffffff; /* Fondo blanco */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 .5rem 1rem rgba(123, 30, 61, 0.2); /* Sombra burdeos */
 }
 
 /* Screens --------------------- */
 .tb_data {
     width: 100%;
     border-radius: 10px;
+    overflow: hidden; /* Para bordes redondeados */
 }
 
 .cts_forms {
@@ -107,7 +132,6 @@ body {
     display: inline-block;
 }
 
-
 .popup {
     position: fixed;
     width: 100%;
@@ -117,7 +141,7 @@ body {
     right: 0;
     bottom: 0;
     margin: auto;
-    background-color: rgba(0,0,0, 0.5);
+    background-color: rgba(123, 30, 61, 0.8); /* fondo burdeos translúcido */
 }
 
 .pp_inner {
@@ -130,7 +154,9 @@ body {
     max-width: 500px;
     height: 440px;
     margin: auto;
-    background: white;
+    background: #fff3f8; /* rosa pálido de fondo */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 .5rem 1rem rgba(123, 30, 61, 0.4); /* Sombra burdeos */
 }
 
 .pp_del_inner, .pp_ms_inner {
@@ -143,5 +169,7 @@ body {
     max-width: 500px;
     height: 200px;
     margin: auto;
-    background: white;
+    background: #fff3f8; /* rosa pálido */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 .5rem 1rem rgba(123, 30, 61, 0.4); /* Sombra burdeos */
 }

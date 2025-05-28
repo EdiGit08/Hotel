@@ -57,13 +57,19 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<Clientes> Listar()
         {
-            return this.IConexion!.Clientes!.Take(20).ToList();
+            return this.IConexion!.Clientes!
+                .Include(x => x._Opinion)
+                .Take(20)
+                
+                .ToList();
         }
 
         public List<Clientes> PorCedula(Clientes? entidad)
         {
             return this.IConexion!.Clientes!
+                .Include(x => x._Opinion)
                 .Where(x => x.Cedula!.Contains(entidad!.Cedula!))
+                
                 .ToList();
         }
 

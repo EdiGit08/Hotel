@@ -87,9 +87,11 @@
                                 Reserva
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmNota1"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Reserva" />
+                                <select id="nmDistribuidor"
+                                        class="form-control"
+                                        asp-for="@Model.Actual!.Reserva"
+                                        asp-items="@(new SelectList(Model.Reservas, "Id", "Codigo"))">
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -97,9 +99,11 @@
                                 Promocion
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmNota1"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Promocion" />
+                                <select id="nmDistribuidor"
+                                        class="form-control"
+                                        asp-for="@Model.Actual!.Promocion"
+                                        asp-items="@(new SelectList(Model.Promociones, "Id", "Descuento"))">
+                                </select>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -202,10 +206,10 @@
                                         @elemento.Total
                                     </td>
                                     <td class="cl_hidden">
-                                        @elemento.Reserva
+                                        @elemento._Reserva!.Codigo
                                     </td>
                                     <td class="cl_hidden">
-                                        @elemento.Promocion
+                                        @elemento._Promocion!.Descuento%
                                     </td>
                                     <td class="cl_hidden">
                                         @elemento.Medio
