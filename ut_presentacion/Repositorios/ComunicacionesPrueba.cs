@@ -14,8 +14,6 @@ namespace ut_presentacion.Repositorios
 
         }
 
-
-
         [TestMethod]
 
         public async Task Setup()
@@ -52,8 +50,5 @@ namespace ut_presentacion.Repositorios
 
             return result.ContainsKey("Url") && result.ContainsKey("UrlToken");
         }
-
-
-
     }
 }

@@ -11,14 +11,15 @@ namespace asp_presentacion.Pages
     public class IndexModel : PageModel
     {
         public bool EstaLogueado = false;
-
-        public static int RolActual { get; set; }
+        public static int RolActual { get; set; } = 0;
         [BindProperty] public string? Email { get; set; }
         [BindProperty] public string? Contrasena { get; set; }
         [BindProperty] public List<Habitaciones>? Lista { get; set; }
 
-        public void OnGet()
+        public void OnGet(string? accion = "")
         {
+            if (accion == "cerrar") OnPostBtClose();
+
             GuardarHabitaciones();
 
             var variable_session = HttpContext.Session.GetString("Usuario");
@@ -55,15 +56,19 @@ namespace asp_presentacion.Pages
                 var usuarios = usuariosPresentacion.Listar().Result;
                 var usuario = usuarios.FirstOrDefault(u => u.Nombre!.ToLower() == Email!.ToLower() && u.Contrasena == Contrasena);
                 
-                RolActual = usuario!.Rol;
-
-                GuardarHabitaciones();
-
                 if (usuario == null)
                 {
                     OnPostBtClean();
                     return;
                 }
+
+                RolActual = usuario!.Rol;
+
+                GuardarHabitaciones();
+
+                RolActual = usuario!.Rol;
+
+                GuardarHabitaciones();
 
                 ViewData["Logged"] = true;
                 HttpContext.Session.SetString("Usuario", Email!);

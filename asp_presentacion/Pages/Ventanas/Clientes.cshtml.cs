@@ -28,6 +28,7 @@ namespace asp_presentacion.Pages.Ventanas
             this.iopiniones = iopiniones;
         }
 
+        public static int id { get; set; } = 0;
         public IFormFile? FormFile { get; set; }
         [BindProperty] public Enumerables.Ventanas Accion { get; set; }
         [BindProperty] public Clientes? Actual { get; set; }
@@ -124,6 +125,9 @@ namespace asp_presentacion.Pages.Ventanas
                 if (Actual!.Id == 0)
                 {
                     task = this.iPresentacion!.Guardar(Actual!)!;
+                    task.Wait();
+                    Actual = task.Result;
+                    id = Actual!.Id;
                     return RedirectToPage("/Ventanas/Usuarios", new { accion = "nuevo" });
                 }else
                     task = this.iPresentacion!.Modificar(Actual!)!;

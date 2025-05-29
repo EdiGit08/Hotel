@@ -28,8 +28,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
 
-                        @if (IndexModel.RolActual == 1)
-                        {
+                        @if (IndexModel.RolActual == 1 || IndexModel.RolActual == 3){
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-page="/Ventanas/Auditorias">Auditorias</a>
                             </li>
@@ -66,6 +65,19 @@
                         </li>
                     </ul>
                 </div>
+
+                @if (Context.Session.GetString("Usuario") != null)
+                {
+                    <div class="dropdown ms-auto">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i> @Context.Session.GetString("Usuario")
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" asp-page="/Ventanas/Usuarios" asp-route-accion="modificar">Modificar info de usuario</a></li>
+                            <li><a class="dropdown-item" asp-page="/Index" asp-route-accion="cerrar">Cerrar sesión</a></li>
+                        </ul>
+                    </div>
+                }
             </div>
         </nav>
     </header>

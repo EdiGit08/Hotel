@@ -91,6 +91,7 @@ CREATE TABLE [Usuarios](
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Nombre] NVARCHAR(50) NOT NULL UNIQUE,
 	[Contrasena] NVARCHAR(50) NOT NULL,
+	[Cliente] INT NOT NULL REFERENCES [Clientes] ([Id]),
 	[Rol] INT NOT NULL REFERENCES [Roles] ([Id])
 );
 GO
@@ -143,12 +144,12 @@ INSERT INTO [Roles_Permisos] ([Codigo], [Permiso], [Rol]) VALUES
 ('R011', 4, 3),
 ('R012', 5, 3);
 
-INSERT INTO [Habitaciones] ([Nombre], [Estado], [Imagen]) VALUES
-('M-502', 1, '/images/photo1.jpg'),
-('H-306', 1, '/images/photo2.jpg'),
-('L-609', 1, '/images/photo3.jpg'),
-('J-807', 1, '/images/photo4.jpg'),
-('K-901', 2, '/images/photo5.jpg');
+INSERT INTO [Habitaciones] ([Nombre], [Camas], [Estado], [Imagen]) VALUES
+('M-502', 1, 1, '/images/photo1.jpg'),
+('H-306', 1, 1, '/images/photo2.jpg'),
+('L-609', 1, 0, '/images/photo3.jpg'),
+('J-807', 1, 1, '/images/photo4.jpg'),
+('K-901', 2, 1, '/images/photo5.jpg');
 
 INSERT INTO [Recepcionistas] ([Carnet], [Nombre], [Salario]) VALUES
 ('6003', 'Juan Cardona', 3000.00),
@@ -217,8 +218,8 @@ INSERT INTO [Pagos] ([Codigo], [Total], [Medio], [Reserva], [Promocion]) VALUES
 ('PG008', 1000000, 'Tarjeta', 8, 1);
 GO
 
-INSERT INTO [Usuarios] ([Nombre], [Contrasena], [Rol]) VALUES
-('Admin', '123', 1)
+INSERT INTO [Usuarios] ([Nombre], [Contrasena], [Rol], [Cliente]) VALUES
+('Admin', '123', 1, 3)
 GO
 
 SELECT [Id], [Cedula], [Nombre], [Opinion] FROM [Clientes];
@@ -241,7 +242,7 @@ SELECT [Id], [Tipo] ,[Tarifa], [Descripcion] FROM [Servicios];
 
 SELECT [Id], [Nombre] FROM [Roles];
 
-SELECT [Id], [Nombre], [Contrasena], [Rol] FROM [Usuarios];
+SELECT [Id], [Nombre], [Contrasena], [Rol], [Cliente] FROM [Usuarios];
 
 SELECT [Id], [Codigo], [Accion], [Fecha] FROM [Auditorias];
 

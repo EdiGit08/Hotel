@@ -166,18 +166,7 @@ namespace asp_presentacion.Pages.Ventanas
             }
         }
 
-        public void OnPostBtCancelar()
-        {
-            try
-            {
-                Accion = Enumerables.Ventanas.Listas;
-                OnPostBtRefrescar();
-            }
-            catch (Exception ex)
-            {
-                LogConversor.Log(ex, ViewData!);
-            }
-        }
+        public IActionResult OnPostBtCancelar() { return RedirectToPage("/Index"); }
 
         public void OnPostBtCerrar()
         {
