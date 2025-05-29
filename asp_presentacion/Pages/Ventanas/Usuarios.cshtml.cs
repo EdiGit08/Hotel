@@ -104,7 +104,10 @@ namespace asp_presentacion.Pages.Ventanas
 
                 Task<Usuarios>? task = null;
                 if (Actual!.Id == 0)
+                {
+                    Actual.Cliente = ClientesModel.id;
                     task = this.iPresentacion!.Guardar(Actual!)!;
+                }
                 else
                     task = this.iPresentacion!.Modificar(Actual!)!;
                 task.Wait();

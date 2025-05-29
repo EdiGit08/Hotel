@@ -93,6 +93,7 @@ namespace ut_presentacion.Nucleo
             entidad.Nombre = "Octavio";
             entidad.Contrasena = "contrasena";
             entidad.Rol = 2;
+            entidad.Cliente = 1;
             return entidad;
         }
 
