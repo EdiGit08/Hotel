@@ -11,16 +11,7 @@ namespace asp_presentacion.Pages
     public class IndexModel : PageModel
     {
         public bool EstaLogueado = false;
-
-<<<<<<< HEAD
-<<<<<<< HEAD
         public static int RolActual { get; set; } = 0;
-=======
-        public static int RolActual { get; set; }
->>>>>>> refs/remotes/origin/master
-=======
-        public static int RolActual { get; set; }
->>>>>>> c1f35a6b1ae6ef5545b327ced70287377e40d8e7
         [BindProperty] public string? Email { get; set; }
         [BindProperty] public string? Contrasena { get; set; }
         [BindProperty] public List<Habitaciones>? Lista { get; set; }
@@ -65,18 +56,15 @@ namespace asp_presentacion.Pages
                 var usuarios = usuariosPresentacion.Listar().Result;
                 var usuario = usuarios.FirstOrDefault(u => u.Nombre!.ToLower() == Email!.ToLower() && u.Contrasena == Contrasena);
                 
-                RolActual = usuario!.Rol;
-<<<<<<< HEAD
-=======
-
-                GuardarHabitaciones();
->>>>>>> c1f35a6b1ae6ef5545b327ced70287377e40d8e7
-
                 if (usuario == null)
                 {
                     OnPostBtClean();
                     return;
                 }
+
+                RolActual = usuario!.Rol;
+
+                GuardarHabitaciones();
 
                 RolActual = usuario!.Rol;
 
