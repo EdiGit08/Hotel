@@ -126,11 +126,14 @@ namespace asp_presentacion.Pages.Ventanas
                 {
                     task = this.iPresentacion!.Guardar(Actual!)!;
 <<<<<<< HEAD
+<<<<<<< HEAD
                     task.Wait();
                     Actual = task.Result;
                     id = Actual!.Id;
 =======
 >>>>>>> refs/remotes/origin/master
+=======
+>>>>>>> c1f35a6b1ae6ef5545b327ced70287377e40d8e7
                     return RedirectToPage("/Ventanas/Usuarios", new { accion = "nuevo" });
                 }else
                     task = this.iPresentacion!.Modificar(Actual!)!;
