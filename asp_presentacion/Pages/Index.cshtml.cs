@@ -12,7 +12,11 @@ namespace asp_presentacion.Pages
     {
         public bool EstaLogueado = false;
 
+<<<<<<< HEAD
         public static int RolActual { get; set; } = 0;
+=======
+        public static int RolActual { get; set; }
+>>>>>>> refs/remotes/origin/master
         [BindProperty] public string? Email { get; set; }
         [BindProperty] public string? Contrasena { get; set; }
         [BindProperty] public List<Habitaciones>? Lista { get; set; }
@@ -56,6 +60,8 @@ namespace asp_presentacion.Pages
                 var usuariosPresentacion = new UsuariosPresentacion();
                 var usuarios = usuariosPresentacion.Listar().Result;
                 var usuario = usuarios.FirstOrDefault(u => u.Nombre!.ToLower() == Email!.ToLower() && u.Contrasena == Contrasena);
+                
+                RolActual = usuario!.Rol;
 
                 if (usuario == null)
                 {
