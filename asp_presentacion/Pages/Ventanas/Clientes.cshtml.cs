@@ -35,7 +35,13 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public List<Clientes>? Lista { get; set; }
         [BindProperty] public List<Opiniones>? Opiniones { get; set; }
 
-        public virtual void OnGet() { OnPostBtRefrescar(); }
+        public virtual void OnGet(string? accion = "")
+        {
+            if (accion == "nuevo")
+                OnPostBtNuevo();
+            else
+                OnPostBtRefrescar();
+        }
 
         public void OnPostBtRefrescar()
         {
@@ -108,7 +114,7 @@ namespace asp_presentacion.Pages.Ventanas
             }
         }
 
-        public virtual void OnPostBtGuardar()
+        public virtual IActionResult OnPostBtGuardar()
         {
             try
             {
@@ -116,8 +122,10 @@ namespace asp_presentacion.Pages.Ventanas
 
                 Task<Clientes>? task = null;
                 if (Actual!.Id == 0)
+                {
                     task = this.iPresentacion!.Guardar(Actual!)!;
-                else
+                    return RedirectToPage("/Ventanas/Usuarios", new { accion = "nuevo" });
+                }else
                     task = this.iPresentacion!.Modificar(Actual!)!;
                 task.Wait();
                 Actual = task.Result;
@@ -128,6 +136,7 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 LogConversor.Log(ex, "Los datos no fueron agregados correctamente", ViewData!);
             }
+            return Page();
         }
 
         public virtual void OnPostBtBorrarVal(string data)
