@@ -10,27 +10,11 @@ namespace asp_presentacion.Pages
 {
     public class IndexModel : PageModel
     {
-        private IHabitacionesPresentacion? iPresentacion = null;
-
-        public IndexModel(IHabitacionesPresentacion iPresentacion)
-        {
-            try
-            {
-                this.iPresentacion = iPresentacion;
-                Filtro = new Habitaciones();
-            }
-            catch (Exception ex)
-            {
-                LogConversor.Log(ex, ViewData!);
-            }
-        }
-
         public bool EstaLogueado = false;
 
+        public static int RolActual { get; set; }
         [BindProperty] public string? Email { get; set; }
         [BindProperty] public string? Contrasena { get; set; }
-        [BindProperty] public Enumerables.Ventanas Accion { get; set; }
-        [BindProperty] public Habitaciones? Filtro { get; set; }
         [BindProperty] public List<Habitaciones>? Lista { get; set; }
 
         public void OnGet()
@@ -70,6 +54,8 @@ namespace asp_presentacion.Pages
                 var usuariosPresentacion = new UsuariosPresentacion();
                 var usuarios = usuariosPresentacion.Listar().Result;
                 var usuario = usuarios.FirstOrDefault(u => u.Nombre!.ToLower() == Email!.ToLower() && u.Contrasena == Contrasena);
+                
+                RolActual = usuario!.Rol;
 
                 GuardarHabitaciones();
 
@@ -108,7 +94,7 @@ namespace asp_presentacion.Pages
         {
             try
             {
-                return RedirectToPage("/Ventanas/Usuarios", new {accion = "nuevo"});
+                return RedirectToPage("/Ventanas/Clientes", new {accion = "nuevo"});
             }
             catch (Exception ex)
             {
@@ -132,13 +118,8 @@ namespace asp_presentacion.Pages
 
         public void GuardarHabitaciones()
         {
-            //Lineas para traer las habitaciones al index
-            Filtro!.Nombre = Filtro!.Nombre ?? "";
-
-            Accion = Enumerables.Ventanas.Listas;
-            var task = this.iPresentacion!.PorNombre(Filtro!);
-            task.Wait();
-            Lista = task.Result;
+            var HabitacionesPresentacion = new HabitacionesPresentacion();
+            Lista = HabitacionesPresentacion.Listar().Result;
         }
     }
 }

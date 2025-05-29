@@ -43,7 +43,7 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public List<Habitaciones>? Habitaciones { get; set; }
         [BindProperty] public List<Recepcionistas>? Recepcionistas { get; set; }
 
-        public virtual void OnGet(string? accion) {
+        public virtual void OnGet(string? accion = "") {
             if (accion == "nuevo")
                 OnPostBtNuevo();
             else
