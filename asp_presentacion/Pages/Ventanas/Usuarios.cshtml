@@ -73,8 +73,9 @@
                                 Contrasena
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmNota2"
-                                       class="cts_forms form-control"
+                                <input type="password"
+                                       onchange="keyUp(this)"
+                                       class="form-control"
                                        asp-for="@Model.Actual!.Contrasena" />
                             </div>
                         </div>

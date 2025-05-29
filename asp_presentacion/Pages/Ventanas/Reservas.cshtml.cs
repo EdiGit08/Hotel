@@ -4,6 +4,7 @@ using lib_presentaciones.Implementaciones;
 using lib_presentaciones.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 
 namespace asp_presentacion.Pages.Ventanas
 {
@@ -42,7 +43,12 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public List<Habitaciones>? Habitaciones { get; set; }
         [BindProperty] public List<Recepcionistas>? Recepcionistas { get; set; }
 
-        public virtual void OnGet() { OnPostBtRefrescar(); }
+        public virtual void OnGet(string? accion) {
+            if (accion == "nuevo")
+                OnPostBtNuevo();
+            else
+                OnPostBtRefrescar();
+        }
 
         public void OnPostBtRefrescar()
         {

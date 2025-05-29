@@ -95,8 +95,8 @@
                             <select id="nmNota2"
                             class="cts_forms form-control"
                             asp-for="@Model.Actual!.Estado">
-                                <option value="tarjeta">Libre</option>
-                                <option value="efectivo">Ocupado</option>
+                                <option value="true">Libre</option>
+                                <option value="false">Ocupado</option>
 
                             </select>
                         </div>
@@ -186,16 +186,14 @@
                                     @if (elemento.Estado)
                                     {
                                         <td class="cl_hidden">
+                                            Libre
+                                        </td>
+                                    } else
+                                    {
+                                        <td class="cl_hidden">
                                             Ocupado
                                         </td>
                                     }
-
-                                    else
-                                    {
-                                        
-                                      <td class="cl_hidden">
-                                        Libre
-                                    </td>}
 
                                     <td>
                                         <div style="text-align: center;">
