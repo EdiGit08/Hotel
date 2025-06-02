@@ -6,53 +6,53 @@
 <center>
     <div>
         <form method="POST"
-              enctype="multipart/form-data">
+        enctype="multipart/form-data">
             @Html.AntiForgeryToken()
 
             <div align="left">
                 <h3>Usuarios</h3>
             </div>
             <div align="left"
-                 class="bt_panel_buttons">
+            class="bt_panel_buttons">
                 <input type="submit"
-                       value="Refrescar"
-                       asp-page-handler="BtRefrescar"
-                       class="btn btn-secondary"
-                       disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                value="Refrescar"
+                asp-page-handler="BtRefrescar"
+                class="btn btn-secondary"
+                disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
                 <input type="submit"
-                       value="Guardar"
-                       asp-page-handler="BtGuardar"
-                       class="btn btn-secondary"
-                       disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                value="Guardar"
+                asp-page-handler="BtGuardar"
+                class="btn btn-secondary"
+                disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
                 <input type="submit"
-                       value="Cancelar"
-                       asp-page-handler="BtCancelar"
-                       class="btn btn-secondary"
-                       disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                value="Cancelar"
+                asp-page-handler="BtCancelar"
+                class="btn btn-secondary"
+                disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
             </div>
 
             @if (Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||
             Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Id" />
+                asp-for="@Model.Actual!.Id" />
             }
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Nombre" />
+                asp-for="@Model.Actual!.Nombre" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Rol" />
+                asp-for="@Model.Actual!.Rol" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Contrasena" />
+                asp-for="@Model.Actual!.Contrasena" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Cliente" />
+                asp-for="@Model.Actual!.Cliente" />
             }
 
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
             {
                 <div class="containers_vn panel panel-default">
-                    <h3>Casa</h3>
+                    <h3>Usuario</h3>
 
                     <div>
                         <div class="form-group">
@@ -61,8 +61,8 @@
                             </label>
                             <div class="col-lg-6">
                                 <input id="nmEstudiante"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Nombre" />
+                                class="cts_forms form-control"
+                                asp-for="@Model.Actual!.Nombre" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -71,10 +71,12 @@
                             </label>
                             <div class="col-lg-6">
                                 <input type="password"
-                                       onchange="keyUp(this)"
-                                       class="form-control"
-                                       asp-for="@Model.Actual!.Contrasena" />
+                                onchange="keyUp(this)"
+                                class="form-control"
+                                asp-for="@Model.Actual!.Contrasena" />
                             </div>
+                            
+                           
                         </div>
                     </div>
                 </div>
@@ -96,16 +98,21 @@
                                        asp-for="@Model.Actual!.Nombre" />
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Rol
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmMateria"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Rol" />
+                        @if (Model.ValidarPermiso())
+                        {
+                            <div class="form-group">
+                                <label class="col-lg-4 control-label">
+                                    Rol
+                                </label>
+                                <div class="col-lg-6">
+                                    <select id="nmDistribuidor"
+                                            class="form-control"
+                                            asp-for="@Model.Actual!.Rol"
+                                            asp-items="@(new SelectList(Model.Roles, "Id", "Nombre"))">
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        }
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
                                 Contraseña
@@ -116,6 +123,10 @@
                                        asp-for="@Model.Actual!.Contrasena" />
                             </div>
                         </div>
+                        <input id="nmEstudiante"
+                               class="cts_forms form-control"
+                               asp-for="@Model.Actual!.Cliente"
+                               hidden />
                     </div>
                 </div>
             }
@@ -178,12 +189,6 @@
                                 Rol
                             </th>
                             <th class="cl_actions">
-                                Contrasena
-                            </th>
-                            <th class="cl_actions">
-                                Cliente
-                            </th>
-                            <th class="cl_actions">
                                 Accion
                             </th>
                         </tr>
@@ -196,13 +201,7 @@
                                         @elemento.Nombre
                                     </td>
                                     <td>
-                                        @elemento.Rol
-                                    </td>
-                                    <td class="cl_hidden">
-                                        @elemento.Contrasena
-                                    </td>
-                                    <td class="cl_hidden">
-                                        @elemento.Cliente
+                                        @elemento._Rol!.Nombre
                                     </td>
                                     <td>
                                         <input type="submit"

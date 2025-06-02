@@ -37,10 +37,19 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public List<Pagos>? Lista { get; set; }
         [BindProperty] public List<Reservas>? Reservas { get; set; }
         [BindProperty] public List<Promociones>? Promociones { get; set; }
+        [BindProperty] public int IdR { get; set;  }
 
 
 
-        public virtual void OnGet() { OnPostBtRefrescar(); }
+        public virtual void OnGet(int Id) {
+
+            IdR = Id;
+
+            if (Id != 0)
+                OnPostBtNuevo();
+            else
+                OnPostBtRefrescar();
+        }
 
         public void OnPostBtRefrescar()
         {
@@ -53,15 +62,36 @@ namespace asp_presentacion.Pages.Ventanas
                     return;
                 }
 
-                if (!ValidarPermiso()) { return; }
-
                 Filtro!.Codigo = Filtro!.Codigo ?? "";
 
                 Accion = Enumerables.Ventanas.Listas;
                 var task = this.iPresentacion!.PorCodigo(Filtro!);
                 task.Wait();
-                Lista = task.Result;
-                Actual = null;
+                var lista = task.Result;
+                
+
+                if (!ValidarPermiso()) {
+
+                    var usuarios_presentacion = new UsuariosPresentacion();
+                    var usuarios = usuarios_presentacion.Listar().Result;
+                    var usuario = usuarios.FirstOrDefault(x => x.Nombre == variable_session);
+
+                    var reservas = ireservas!.Listar().Result.Where(x => x.Cliente == usuario!.Cliente).ToList();
+                    Lista = new List<Pagos>();
+
+                    foreach(var reserva in reservas)
+                    {
+                        var pago = lista.FirstOrDefault(x => x.Reserva == reserva.Id);
+                        if(pago != null)
+                        {
+                            Lista.Add(pago);
+                        }
+                    }
+                }
+
+                else { Lista = task.Result; }
+
+                    Actual = null;
             }
             catch (Exception ex)
             {
@@ -92,7 +122,13 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new Pagos();
+                Actual.Codigo = Guid.NewGuid().ToString().Substring(0, 16);
                 CargarCombox();
+
+                Actual.Reserva = IdR;
+                var task = this.ireservas!.Listar();
+                task.Wait();
+                Actual._Reserva = task.Result.FirstOrDefault(x => x.Id == IdR);
             }
             catch (Exception ex)
             {
@@ -123,6 +159,10 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 Accion = Enumerables.Ventanas.Editar;
+                Actual!._Reserva = null;
+                var ac = Actual;
+
+                
 
                 Task<Pagos>? task = null;
                 if (Actual!.Id == 0)

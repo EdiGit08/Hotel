@@ -56,12 +56,18 @@ namespace lib_aplicaciones.Implementaciones
 
         public List<Usuarios> Listar()
         {
-            return this.IConexion!.Usuarios!.Take(20).ToList();
+            return this.IConexion!.Usuarios!
+                .Include(x=> x._Cliente)
+                .Include(y=> y._Rol)
+                .Take(20)
+                .ToList();
         }
 
         public List<Usuarios> PorNombre(Usuarios? entidad)
         {
             return this.IConexion!.Usuarios!
+                .Include(x => x._Cliente)
+                .Include(y => y._Rol)
                 .Where(x => x.Nombre!.Contains(entidad!.Nombre!))
                 .ToList();
         }
@@ -95,7 +101,8 @@ namespace lib_aplicaciones.Implementaciones
                 entidad.Codigo = "AHS" + count.Next(100, 999);
                 entidad.Accion = accion;
                 entidad.Fecha = DateTime.Now;
-            };
+            }
+            ;
             this.IConexion.Auditorias!.Add(entidad);
         }
     }

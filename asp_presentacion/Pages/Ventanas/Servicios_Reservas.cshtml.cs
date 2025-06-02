@@ -88,9 +88,14 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new Servicios_Reservas();
+                Actual.Reserva = IdR;
+                Actual.Codigo = Guid.NewGuid().ToString().Substring(0, 8);
                 CargarCombox();
 
-                Actual._Reserva = Reservas!.FirstOrDefault(x => x.Id == IdR);
+                var task = this.iReservas!.Listar();
+                task.Wait();
+                var reservas_lista = task.Result;
+                Actual._Reserva = reservas_lista.FirstOrDefault(x => x.Id == IdR);
             }
             catch (Exception ex)
             {
@@ -113,14 +118,15 @@ namespace asp_presentacion.Pages.Ventanas
             }
         }
 
-        public virtual void OnPostBtGuardar()
+        public virtual IActionResult OnPostBtGuardar()
         {
             try
             {
                 Accion = Enumerables.Ventanas.Editar;
 
                 Actual!.Reserva = IdR;
-                Actual!._Reserva = null;
+                Actual._Reserva = null;
+
 
                 Task<Servicios_Reservas>? task = null;
                 if (Actual!.Id == 0)
@@ -129,6 +135,8 @@ namespace asp_presentacion.Pages.Ventanas
                     task = this.iPresentacion!.Modificar(Actual!)!;
                 task.Wait();
                 Actual = task.Result;
+                if (Actual.Id != 0)
+                    return RedirectToPage("/Ventanas/Pagos", new {Id = IdR});
                 Accion = Enumerables.Ventanas.Listas;
                 OnPostBtRefrescar();
             }
@@ -136,6 +144,7 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 LogConversor.Log(ex, "Los datos no fueron agregados correctamente (asegurese de que las referencias existan)", ViewData!);
             }
+            return Page();
         }
 
         public virtual void OnPostBtBorrarVal(string data)

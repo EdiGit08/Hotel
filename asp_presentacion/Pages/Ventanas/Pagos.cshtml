@@ -20,10 +20,10 @@
                        class="btn btn-secondary"
                        disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
                 <input type="submit"
-                       value="Nuevo"
+                       value="Pagar"
                        asp-page-handler="BtNuevo"
                        class="btn btn-secondary"
-                       disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                       disabled />
                 <input type="submit"
                        value="Guardar"
                        asp-page-handler="BtGuardar"
@@ -47,13 +47,13 @@
                 <input type="hidden"
                        asp-for="@Model.Actual!.Codigo" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Total" />
-                <input type="hidden"
                        asp-for="@Model.Actual!.Medio" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Reserva" />
+                       asp-for="@Model.Actual!.Total" />
                 <input type="hidden"
                        asp-for="@Model.Actual!.Promocion" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Reserva" />
             }
 
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
@@ -69,7 +69,25 @@
                             <div class="col-lg-6">
                                 <input id="nmEstudiante"
                                        class="cts_forms form-control"
+                                       readonly
+                                       value="@Model.Actual!.Codigo"
                                        asp-for="@Model.Actual!.Codigo" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Medio de pago
+                            </label>
+                            <div class="col-lg-6">
+                                <select id="nmNota2"
+                                        class="cts_forms form-control"
+                                        asp-for="@Model.Actual!.Medio">
+                                    <option value="Tarjeta">Tarjeta</option>
+                                    <option value="Efectivo">Efectivo</option>
+                                    <option value="Cuotas">Cuotas</option>
+                                    <option value="Transferencia">Transferencia</option>
+
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -84,19 +102,7 @@
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Reserva
-                            </label>
-                            <div class="col-lg-6">
-                                <select id="nmDistribuidor"
-                                        class="form-control"
-                                        asp-for="@Model.Actual!.Reserva"
-                                        asp-items="@(new SelectList(Model.Reservas, "Id", "Codigo"))">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Promocion
+                                Descuento
                             </label>
                             <div class="col-lg-6">
                                 <select id="nmDistribuidor"
@@ -106,20 +112,25 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Medio
+                                Reserva
                             </label>
-                            <select id="Medio"
-                                    class="cts_forms form-control"
-                                    asp-for="@Model.Actual!.Medio">
-                                <option value="Efectivo">Efectivo</option>
-                                <option value="Tarjeta">Tarjeta</option>
-                                <option value="Transferencia">Transferencia</option>
-                                <option value="Bono">Bono</option>
-                                <option value="PSE">PSE</option>
-                            </select>
+                            <div class="col-lg-6">
+                                <input type="text"
+                                       id="nmDistribuidor"
+                                       class="form-control"
+                                       value="@Model.Actual!._Reserva!.Codigo"
+                                       asp-for="@Model.Actual!._Reserva!.Codigo"
+                                       readonly />
+                            </div>
                         </div>
+                        <input id="nmEstudiante"
+                               class="cts_forms form-control"
+                               hidden
+                               value="@Model.Actual!.Reserva"
+                               asp-for="@Model.Actual!.Reserva!" />
+                        
                     </div>
                 </div>
             }
@@ -146,7 +157,7 @@
                             </h4>
                             <h6 align="left">
                                 @Model.Actual!.Codigo,
-                                @Model.Actual!.Total
+                                @Model.Actual!._Reserva!.Codigo
                             </h6>
                             <br />
                             <br />
@@ -179,19 +190,16 @@
                                 Codigo
                             </th>
                             <th>
+                                Medio
+                            </th>
+                            <th class="cl_hidden">
                                 Total
                             </th>
                             <th class="cl_hidden">
-                                Reserva
+                                Descuento
                             </th>
                             <th class="cl_hidden">
-                                Promocion
-                            </th>
-                            <th class="cl_actions">
-                                Medio
-                            </th>
-                            <th class="cl_actions">
-                                Accion
+                                Reserva
                             </th>
                         </tr>
                         @if (Model != null && Model.Lista != null)
@@ -203,28 +211,16 @@
                                         @elemento.Codigo
                                     </td>
                                     <td>
+                                        @elemento.Medio
+                                    </td>
+                                    <td class="cl_hidden">
                                         @elemento.Total
                                     </td>
                                     <td class="cl_hidden">
+                                        @elemento._Promocion!.Descuento
+                                    </td>
+                                    <td class="cl_hidden">
                                         @elemento._Reserva!.Codigo
-                                    </td>
-                                    <td class="cl_hidden">
-                                        @elemento._Promocion!.Descuento%
-                                    </td>
-                                    <td class="cl_hidden">
-                                        @elemento.Medio
-                                    </td>
-                                    <td>
-                                        <input type="submit"
-                                               value="Modicar"
-                                               asp-page-handler="BtModificar"
-                                               class="btn btn-secondary"
-                                               asp-route-data="@elemento.Id" />
-                                        <input type="submit"
-                                               value="Borrar"
-                                               asp-page-handler="BtBorrarVal"
-                                               class="btn btn-secondary"
-                                               asp-route-data="@elemento.Id" />
                                     </td>
                                 </tr>
                             }
@@ -235,4 +231,3 @@
         </form>
     </div>
 </center>
-

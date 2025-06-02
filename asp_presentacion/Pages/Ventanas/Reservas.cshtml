@@ -71,6 +71,8 @@
                             <div class="col-lg-6">
                                 <input id="nmEstudiante"
                                        class="cts_forms form-control"
+                                       readonly
+                                       value="@Model.Actual!.Codigo"
                                        asp-for="@Model.Actual!.Codigo" />
                             </div>
                         </div>
@@ -89,13 +91,18 @@
                                 Cliente
                             </label>
                             <div class="col-lg-6">
-                                <select id="nmDistribuidor"
-                                        class="form-control"
-                                        asp-for="@Model.Actual!.Cliente"
-                                        asp-items="@(new SelectList(Model.Clientes, "Id", "Nombre"))">
-                                </select>
+                                <input id="nmEstudiante"
+                                       class="cts_forms form-control"
+                                       readonly
+                                       value="@Model.Actual!._Cliente!.Nombre"
+                                        />
                             </div>
                         </div>
+                        <input id="nmEstudiante"
+                               class="cts_forms form-control"
+                               hidden
+                               value="@Model.Actual!.Cliente"
+                               asp-for="@Model.Actual!.Cliente!" />
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
                                 Recepcionista

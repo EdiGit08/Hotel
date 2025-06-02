@@ -67,6 +67,8 @@
                             <div class="col-lg-6">
                                 <input id="nmEstudiante"
                                        class="cts_forms form-control"
+                                       readonly
+                                       value="@Model.Actual!.Codigo"
                                        asp-for="@Model.Actual!.Codigo" />
                             </div>
                         </div>
@@ -90,6 +92,7 @@
                                 <input type="text"
                                        id="nmDistribuidor"
                                        class="form-control"
+                                       value="@Model.Actual!._Reserva!.Codigo"
                                        asp-for="@Model.Actual!._Reserva!.Codigo"
                                        readonly />
                             </div>

@@ -42,6 +42,8 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public List<Clientes>? Clientes { get; set; }
         [BindProperty] public List<Habitaciones>? Habitaciones { get; set; }
         [BindProperty] public List<Recepcionistas>? Recepcionistas { get; set; }
+        [BindProperty] public Usuarios? Usuario { get; set; }
+
 
         public virtual void OnGet(string? accion = "") {
             if (accion == "nuevo")
@@ -63,10 +65,23 @@ namespace asp_presentacion.Pages.Ventanas
 
                 Filtro!.Codigo = Filtro!.Codigo ?? "";
 
-                Accion = Enumerables.Ventanas.Listas;
                 var task = this.iPresentacion!.PorCodigo(Filtro!);
                 task.Wait();
-                Lista = task.Result;
+
+                if (!ValidarPermiso())
+                {
+                    var usuariosPresentacion = new UsuariosPresentacion();
+                    var usuarios = usuariosPresentacion.Listar().Result;
+                    var usuario = usuarios.FirstOrDefault(u => u.Nombre!.ToLower() == variable_session!.ToLower());
+
+                    
+                    
+                    Lista = task.Result.Where(x => x.Cliente == usuario!.Cliente).ToList();
+                }
+
+                else { Lista = task.Result; }
+
+                    Accion = Enumerables.Ventanas.Listas;
                 Actual = null;
             }
             catch (Exception ex)
@@ -101,6 +116,16 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new Reservas();
+                Actual.Codigo = Guid.NewGuid().ToString().Substring(0,8);
+
+                var variable_session = HttpContext.Session.GetString("Usuario");
+                var usuariosPresentacion = new UsuariosPresentacion();
+                var usuarios = usuariosPresentacion.Listar().Result;
+                Usuario = usuarios.FirstOrDefault(u => u.Nombre!.ToLower() == variable_session!.ToLower());
+
+                Actual.Cliente = Usuario!.Cliente;
+                var task = this.iclientes!.Listar();
+                Actual._Cliente = task.Result.FirstOrDefault(x => x.Id == Actual.Cliente);
                 CargarCombox();
             }
             catch (Exception ex)
@@ -133,6 +158,7 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 Accion = Enumerables.Ventanas.Editar;
                 int Id= Actual!.Id;
+
                 Task<Reservas>? task = null;
                 if (Actual!.Id == 0)
                     task = this.iPresentacion!.Guardar(Actual!)!;

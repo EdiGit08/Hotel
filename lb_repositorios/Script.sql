@@ -165,13 +165,7 @@ INSERT INTO [Opiniones] ([Opcion], [Cantidad]) VALUES
 ('Muy bien', 1);
 
 INSERT INTO [Clientes] ([Cedula], [Nombre], [Opinion]) VALUES
-('1002', 'Marisol Alvarez', 5),
-('7005', 'Camilo Arango', 2),
-('4003', 'Esteban Ramirez', 3),
-('5006', 'Juan Giraldo', 4),
-('5009', 'Camila Ramirez', 5),
-('9001', 'Manuela Tobon', 1),
-('3006', 'Miguel Lopez', 4);
+('1002', 'Marisol Alvarez', 5)
 
 INSERT INTO [Reservas] ([Codigo], [Fecha_entrada], [Fecha_salida], [Cliente], [Recepcionista], [Habitacion]) VALUES
 ('A501', '2024-12-14 18:00', '2025-01-06 13:00', 1, 1, 1),
@@ -219,7 +213,7 @@ INSERT INTO [Pagos] ([Codigo], [Total], [Medio], [Reserva], [Promocion]) VALUES
 GO
 
 INSERT INTO [Usuarios] ([Nombre], [Contrasena], [Rol], [Cliente]) VALUES
-('Admin', '123', 1, 3)
+('Admin', '123', 1, 1)
 GO
 
 SELECT [Id], [Cedula], [Nombre], [Opinion] FROM [Clientes];

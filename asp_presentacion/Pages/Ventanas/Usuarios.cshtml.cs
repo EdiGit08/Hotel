@@ -11,11 +11,15 @@ namespace asp_presentacion.Pages.Ventanas
     {
         private IUsuariosPresentacion? iPresentacion = null;
 
-        public UsuariosModel(IUsuariosPresentacion iPresentacion)
+        private IRolesPresentacion? iRoles = null;
+
+        public UsuariosModel(IUsuariosPresentacion iPresentacion,
+             IRolesPresentacion? iRoles)
         {
             try
             {
                 this.iPresentacion = iPresentacion;
+                this.iRoles = iRoles;
                 Filtro = new Usuarios();
             }
             catch (Exception ex)
@@ -29,15 +33,18 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public Usuarios? Actual { get; set; }
         [BindProperty] public Usuarios? Filtro { get; set; }
         [BindProperty] public List<Usuarios>? Lista { get; set; }
+        [BindProperty] public List<Roles>? Roles { get; set; }
 
-        public virtual void OnGet(string? accion = "") {
+
+        public virtual void OnGet(string? accion = "")
+        {
             if (accion == "nuevo")
                 OnPostBtNuevo();
             else
-                OnPostBtRefrescar(); 
+                OnPostBtRefrescar();
         }
 
-        public enum Ventana{ EditarUser = 3 }
+        public enum Ventana { EditarUser = 3 }
 
         public void OnPostBtRefrescar()
         {
@@ -66,12 +73,20 @@ namespace asp_presentacion.Pages.Ventanas
             }
         }
 
+        public virtual void cargar()
+        {
+            var task = this.iRoles!.Listar();
+            task.Wait();
+            Roles = task.Result;
+        }
+
         public virtual void OnPostBtNuevo()
         {
             try
             {
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new Usuarios();
+                cargar();
             }
             catch (Exception ex)
             {
@@ -84,6 +99,7 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 OnPostBtRefrescar();
+                cargar();
 
                 if (!ValidarPermiso()) { return; }
 
