@@ -168,14 +168,7 @@ INSERT INTO [Clientes] ([Cedula], [Nombre], [Opinion]) VALUES
 ('1002', 'Marisol Alvarez', 5)
 
 INSERT INTO [Reservas] ([Codigo], [Fecha_entrada], [Fecha_salida], [Cliente], [Recepcionista], [Habitacion]) VALUES
-('A501', '2024-12-14 18:00', '2025-01-06 13:00', 1, 1, 1),
-('A903', '2003-03-16 11:00', '2003-03-17 12:00', 2, 2, 2),
-('A807', '2022-12-13 14:15', '2022-12-17 17:30', 1, 1, 3),
-('A306', '2024-12-14 16:00', '2025-01-02 12:00', 3, 3, 1),
-('A100', '2019-10-02 11:30', '2019-11-03 13:20', 4, 4, 4),
-('A208', '2020-02-11 12:00', '2020-02-15 13:00', 5, 4, 4),
-('A600', '2022-04-12 08:00', '2022-05-14 14:45', 6, 2, 2),
-('A701', '2010-07-13 09:30', '2010-08-14 12:00', 7, 4, 5);
+('A501', '2024-12-14 18:00', '2025-01-06 13:00', 1, 1, 1);
 
 INSERT INTO [Servicios] ([Tipo], [Tarifa], [Descripcion]) VALUES
 ('Restaurante', 28000, 'Servicio de restaurante'),
@@ -184,14 +177,7 @@ INSERT INTO [Servicios] ([Tipo], [Tarifa], [Descripcion]) VALUES
 ('Discoteca', 65000, 'Entrada a la discoteca');
 
 INSERT INTO [Servicios_Reservas] ([Codigo], [Servicio], [Reserva]) VALUES
-('SR001', 1, 1),
-('SR002', 2, 2),
-('SR003', 2, 3),
-('SR004', 3, 4),
-('SR005', 1, 5),
-('SR006', 4, 6),
-('SR007', 2, 7),
-('SR008', 4, 8);
+('SR001', 1, 1);
 
 INSERT INTO [Promociones] ([Codigo], [Descuento], [Fecha_inicio], [Fecha_fin]) VALUES
 ('P001', 0, '2022-06-10', '2022-06-19'),
@@ -202,14 +188,7 @@ INSERT INTO [Promociones] ([Codigo], [Descuento], [Fecha_inicio], [Fecha_fin]) V
 ('P006', 50, '2022-05-10', '2022-05-29');
 
 INSERT INTO [Pagos] ([Codigo], [Total], [Medio], [Reserva], [Promocion]) VALUES
-('PG001', 500000, 'Efectivo', 1, 3),
-('PG002', 250000, 'Tarjeta', 2, 5),
-('PG003', 6000000, 'Efectivo', 3, 4),
-('PG004', 120000, 'Transferencia', 4, 1),
-('PG005', 8000000, 'Tarjeta', 5, 2),
-('PG006', 6000000, 'Efectivo', 6, 2),
-('PG007', 250000, 'Efectivo', 7, 6),
-('PG008', 1000000, 'Tarjeta', 8, 1);
+('PG001', 500000, 'Efectivo', 1, 3);
 GO
 
 INSERT INTO [Usuarios] ([Nombre], [Contrasena], [Rol], [Cliente]) VALUES
