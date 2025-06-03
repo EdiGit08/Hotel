@@ -34,6 +34,19 @@
                        asp-page-handler="BtCancelar"
                        class="btn btn-secondary"
                        disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                @if (Model != null && Model.Lista != null)
+                {
+                    <input type="submit"
+                           value="Excel"
+                           asp-page-handler="ExportarExcel"
+                           class="btn btn-secondary"
+                           disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                    <input type="submit"
+                           value="PDF"
+                           asp-page-handler="ExportarPDF"
+                           class="btn btn-secondary"
+                           disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                }
             </div>
 
             @if (Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||

@@ -4,6 +4,12 @@ using lib_presentaciones.Implementaciones;
 using lib_presentaciones.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ClosedXML.Excel;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.IO.Font.Constants;
+using iText.Kernel.Font;
 
 namespace asp_presentacion.Pages.Ventanas
 {
@@ -67,11 +73,11 @@ namespace asp_presentacion.Pages.Ventanas
                 Accion = Enumerables.Ventanas.Listas;
                 var task = this.iPresentacion!.PorCodigo(Filtro!);
                 task.Wait();
-                var lista = task.Result;
+                
                 
 
                 if (!ValidarPermiso()) {
-
+                    var lista = task.Result;
                     var usuarios_presentacion = new UsuariosPresentacion();
                     var usuarios = usuarios_presentacion.Listar().Result;
                     var usuario = usuarios.FirstOrDefault(x => x.Nombre == variable_session);
@@ -247,6 +253,156 @@ namespace asp_presentacion.Pages.Ventanas
             if (usuario == null)
                 return false;
             return true;
+        }
+
+        public virtual IActionResult OnPostExportarExcel()
+        {
+
+            try
+            {
+                var task = this.iPresentacion!.Listar();
+                task.Wait();
+
+                
+                if (!ValidarPermiso())
+                {
+                    var lista = task.Result;
+                    var variable_session = HttpContext.Session.GetString("Usuario");
+                    var usuarios_presentacion = new UsuariosPresentacion();
+                    var usuarios = usuarios_presentacion.Listar().Result;
+                    var usuario = usuarios.FirstOrDefault(x => x.Nombre == variable_session);
+
+                    var reservas = ireservas!.Listar().Result.Where(x => x.Cliente == usuario!.Cliente).ToList();
+                    Lista = new List<Pagos>();
+
+                    foreach (var reserva in reservas)
+                    {
+                        var pago = lista.FirstOrDefault(x => x.Reserva == reserva.Id);
+                        if (pago != null)
+                        {
+                            Lista.Add(pago);
+                        }
+                    }
+                }
+
+                else { Lista = task.Result; }
+
+                using var workbook = new XLWorkbook();
+                var worksheet = workbook.Worksheets.Add("Pagos");
+
+                worksheet.Cell(1, 5).Value = "ID";
+                worksheet.Cell(1, 6).Value = "CODIGO";
+                worksheet.Cell(1, 7).Value = "MEDIO PAGO";
+                worksheet.Cell(1, 8).Value = "TOTAL";
+                worksheet.Cell(1, 9).Value = "RESERVA";
+
+                var headerRange = worksheet.Range("E1:I1");
+                headerRange.Style.Font.Bold = true;
+                headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+                headerRange.Style.Font.FontColor = XLColor.White;
+
+
+                for (int i = 0; i < Lista.Count; i++)
+                {
+                    var pago = Lista[i];
+                    worksheet.Cell(i + 2, 5).Value = pago.Id;
+                    worksheet.Cell(i + 2, 6).Value = pago.Codigo;
+                    worksheet.Cell(i + 2, 7).Value = pago.Medio;
+                    worksheet.Cell(i + 2, 8).Value = pago._Reserva!.Codigo;
+                }
+
+                worksheet.Columns().AdjustToContents();
+
+                using var stream = new MemoryStream();
+                workbook.SaveAs(stream);
+                stream.Position = 0;
+
+                return File(stream.ToArray(),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "Pagos.xlsx");
+            }
+
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+                return Page();
+            }
+
+        }
+
+        public virtual IActionResult OnPostExportarPDF()
+        {
+            try
+            {
+                var task = this.iPresentacion!.Listar();
+                task.Wait();
+
+                if (!ValidarPermiso())
+                {
+                    var variable_session = HttpContext.Session.GetString("Usuario");
+                    var lista = task.Result;
+                    var usuarios_presentacion = new UsuariosPresentacion();
+                    var usuarios = usuarios_presentacion.Listar().Result;
+                    var usuario = usuarios.FirstOrDefault(x => x.Nombre == variable_session);
+
+                    var reservas = ireservas!.Listar().Result.Where(x => x.Cliente == usuario!.Cliente).ToList();
+                    Lista = new List<Pagos>();
+
+                    foreach (var reserva in reservas)
+                    {
+                        var pago = lista.FirstOrDefault(x => x.Reserva == reserva.Id);
+                        if (pago != null)
+                        {
+                            Lista.Add(pago);
+                        }
+                    }
+                }
+
+                else { Lista = task.Result; }
+
+                using var stream = new MemoryStream();
+                var writer = new PdfWriter(stream);
+                var pdf = new PdfDocument(writer);
+                var document = new Document(pdf);
+
+                var boldFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
+
+                var titulo = new Paragraph("Pagos")
+                            .SetFont(boldFont)
+                            .SetFontSize(14);
+
+                document.Add(titulo);
+
+                var table = new Table(6);
+                table.AddHeaderCell("ID");
+                table.AddHeaderCell("CODIGO");
+                table.AddHeaderCell("MEDIO");
+                table.AddHeaderCell("TOTAL");
+                table.AddHeaderCell("DESCUENTO");
+                table.AddHeaderCell("RESERVA");
+
+
+                foreach (var reserva in Lista)
+                {
+                    table.AddCell(reserva.Id.ToString());
+                    table.AddCell(reserva.Codigo);
+                    table.AddCell(reserva.Medio);
+                    table.AddCell(reserva.Total.ToString());
+                    table.AddCell(reserva._Promocion!.Descuento.ToString());
+                    table.AddCell(reserva._Reserva!.Codigo);
+
+                }
+
+                document.Add(table);
+                document.Close();
+
+                return File(stream.ToArray(), "application/pdf", "Pagos.pdf");
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+                return Page();
+            }
         }
     }
 }

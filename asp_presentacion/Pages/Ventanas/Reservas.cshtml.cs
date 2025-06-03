@@ -4,7 +4,12 @@ using lib_presentaciones.Implementaciones;
 using lib_presentaciones.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
+using ClosedXML.Excel;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.IO.Font.Constants;
+using iText.Kernel.Font;
 
 namespace asp_presentacion.Pages.Ventanas
 {
@@ -239,6 +244,141 @@ namespace asp_presentacion.Pages.Ventanas
                 return false;
             return true;
         }
+
+        public virtual IActionResult OnPostExportarExcel()
+        {
+
+            try {
+                    var task = this.iPresentacion!.Listar();
+                    task.Wait();
+
+                    if (!ValidarPermiso())
+                    {
+
+                        var variable_session = HttpContext.Session.GetString("Usuario");
+                        var usuariosPresentacion = new UsuariosPresentacion();
+                        var usuarios = usuariosPresentacion.Listar().Result;
+                        var usuario = usuarios.FirstOrDefault(u => u.Nombre!.ToLower() == variable_session!.ToLower());
+
+
+
+                        Lista = task.Result.Where(x => x.Cliente == usuario!.Cliente).ToList();
+                    }
+
+                    else { Lista = task.Result; }
+
+                    using var workbook = new XLWorkbook();
+                    var worksheet = workbook.Worksheets.Add("Reservas");
+
+                    worksheet.Cell(1, 5).Value = "ID";
+                    worksheet.Cell(1, 6).Value = "CODIGO";
+                    worksheet.Cell(1, 7).Value = "FECHA ENTRADA";
+                    worksheet.Cell(1, 8).Value = "FECHA SALIDA";
+                    worksheet.Cell(1, 9).Value = "CLIENTE";
+                    worksheet.Cell(1, 10).Value = "HABITACION";
+
+                    var headerRange = worksheet.Range("E1:J1");
+                    headerRange.Style.Font.Bold = true;
+                    headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
+                    headerRange.Style.Font.FontColor = XLColor.White;
+
+
+                for (int i = 0; i < Lista.Count; i++)
+                    {
+                        var reserva = Lista[i];
+                        worksheet.Cell(i + 2, 5).Value = reserva.Id;
+                        worksheet.Cell(i + 2, 6).Value = reserva.Codigo;
+                        worksheet.Cell(i + 2, 7).Value = reserva.Fecha_Entrada;
+                        worksheet.Cell(i + 2, 8).Value = reserva.Fecha_Salida;
+                        worksheet.Cell(i + 2, 9).Value = reserva._Cliente!.Nombre;
+                        worksheet.Cell(i + 2, 10).Value = reserva._Habitacion!.Nombre;
+                }
+
+                    worksheet.Columns().AdjustToContents();
+                    using var stream = new MemoryStream();
+                    workbook.SaveAs(stream);
+                    stream.Position = 0;
+
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "Reservas.xlsx");
+               }
+
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+                return Page();
+            }
+
+        }
+
+        public virtual IActionResult OnPostExportarPDF()
+        {
+            try
+            {
+                var task = this.iPresentacion!.Listar();
+                task.Wait();
+
+                if (!ValidarPermiso())
+                {
+
+                    var variable_session = HttpContext.Session.GetString("Usuario");
+                    var usuariosPresentacion = new UsuariosPresentacion();
+                    var usuarios = usuariosPresentacion.Listar().Result;
+                    var usuario = usuarios.FirstOrDefault(u => u.Nombre!.ToLower() == variable_session!.ToLower());
+
+
+
+                    Lista = task.Result.Where(x => x.Cliente == usuario!.Cliente).ToList();
+                }
+
+                else { Lista = task.Result; }
+
+                using var stream = new MemoryStream();
+                var writer = new PdfWriter(stream);
+                var pdf = new PdfDocument(writer);
+                var document = new Document(pdf);
+
+                var boldFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
+
+                var titulo = new Paragraph("Reservas")
+                            .SetFont(boldFont)
+                            .SetFontSize(14);
+
+                document.Add(titulo);
+
+                var table = new Table(6);
+                table.AddHeaderCell("ID");
+                table.AddHeaderCell("CODIGO");
+                table.AddHeaderCell("FECHA ENTRADA");
+                table.AddHeaderCell("FECHA SALIDA");
+                table.AddHeaderCell("CLIENTE");
+                table.AddHeaderCell("HABITACION");
+
+
+                foreach (var reserva in Lista)
+                {
+                    table.AddCell(reserva.Id.ToString());
+                    table.AddCell(reserva.Codigo);
+                    table.AddCell(reserva.Fecha_Entrada.ToString());
+                    table.AddCell(reserva.Fecha_Salida.ToString());
+                    table.AddCell(reserva._Cliente!.Nombre);
+                    table.AddCell(reserva._Habitacion!.Nombre);
+
+                }
+
+                document.Add(table);
+                document.Close();
+
+                return File(stream.ToArray(), "application/pdf", "Reservas.pdf");
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+                return Page();
+            }
+        }
+
     }
 }
 

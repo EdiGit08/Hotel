@@ -6,34 +6,48 @@
 <center>
     <div>
         <form method="POST"
-              enctype="multipart/form-data">
+        enctype="multipart/form-data">
             @Html.AntiForgeryToken()
 
             <div align="left">
                 <h3>Pagos</h3>
             </div>
             <div align="left"
-                 class="bt_panel_buttons">
+            class="bt_panel_buttons">
                 <input type="submit"
-                       value="Refrescar"
-                       asp-page-handler="BtRefrescar"
-                       class="btn btn-secondary"
-                       disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                value="Refrescar"
+                asp-page-handler="BtRefrescar"
+                class="btn btn-secondary"
+                disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
                 <input type="submit"
-                       value="Pagar"
-                       asp-page-handler="BtNuevo"
-                       class="btn btn-secondary"
-                       disabled />
+                value="Pagar"
+                asp-page-handler="BtNuevo"
+                class="btn btn-secondary"
+                disabled />
                 <input type="submit"
-                       value="Guardar"
-                       asp-page-handler="BtGuardar"
-                       class="btn btn-secondary"
-                       disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                value="Guardar"
+                asp-page-handler="BtGuardar"
+                class="btn btn-secondary"
+                disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
                 <input type="submit"
-                       value="Cancelar"
-                       asp-page-handler="BtCancelar"
-                       class="btn btn-secondary"
-                       disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                value="Cancelar"
+                asp-page-handler="BtCancelar"
+                class="btn btn-secondary"
+                disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                @if (Model != null && Model.Lista != null)
+                {
+                    <input type="submit"
+                           value="Excel"
+                           asp-page-handler="ExportarExcel"
+                           class="btn btn-secondary"
+                           disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                    <input type="submit"
+                           value="PDF"
+                           asp-page-handler="ExportarPDF"
+                           class="btn btn-secondary"
+                           disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                }
+               
             </div>
 
             @if (Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||
